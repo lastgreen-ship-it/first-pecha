@@ -105,7 +105,15 @@
     border:1.5px solid var(--blue);padding:7px 14px;border-radius:999px}
 
   /* ---------- Hero ---------- */
-  .hero{background:linear-gradient(165deg,#0b2e24 0%,#0f4433 55%,#14614a 100%);padding:46px 0 40px;scroll-margin-top:68px;color:#fff}
+  /* hero 배경: 실사진(hero.jpg)이 있으면 사진 위에 어두운 그린 오버레이(글자 가독성),
+     사진이 없으면 solid 그린으로 자연스럽게 폴백됨. 사진만 폴더에 넣고 재배포하면 자동 적용. */
+  .hero{
+    background:
+      linear-gradient(165deg,rgba(11,46,36,.86) 0%,rgba(15,68,51,.88) 55%,rgba(20,97,74,.82) 100%),
+      url('hero.jpg') center/cover no-repeat,
+      #0b2e24;
+    padding:46px 0 40px;scroll-margin-top:68px;color:#fff
+  }
   .hero h1{font-size:33px;font-weight:800;letter-spacing:-1.4px;line-height:1.26}
   .hero h1 b{color:var(--gold)}
   .hero p.sub{margin-top:12px;color:rgba(255,255,255,.74);font-size:15px}
