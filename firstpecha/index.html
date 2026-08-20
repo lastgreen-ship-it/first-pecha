@@ -87,6 +87,7 @@
     font-family:'Wanted Sans Variable','Wanted Sans','Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;
     color:var(--ink);background:var(--bg);line-height:1.55;letter-spacing:-.2px;
     -webkit-font-smoothing:antialiased;padding-bottom:76px;
+    word-break:keep-all;overflow-wrap:break-word;
   }
   .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
   @media(min-width:640px){:root{--max:600px}}
@@ -541,16 +542,41 @@ function calcEstimate(){
   const high = Math.round((scrap*1.15 + cat)/10000)*10000;
   return { low, high, weight: sel.w };
 }
+/* 견적 숫자 카운트업 애니메이션 (이전 값 → 새 값으로 부드럽게) */
+let _estRAF = null, _estLow = 0, _estHigh = 0;
+const _reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function _estText(l, h){
+  return `${l.toLocaleString('ko-KR')}만 ~ ${h.toLocaleString('ko-KR')}만원`;
+}
+function animateEstimate(low, high){
+  const el = document.getElementById('estRange');
+  const toL = Math.round(low/10000), toH = Math.round(high/10000);
+  if (_reduceMotion){                       // 모션 최소화 설정이면 즉시 표시
+    el.textContent = _estText(toL, toH); _estLow = toL; _estHigh = toH; return;
+  }
+  const frL = _estLow, frH = _estHigh;
+  const dur = 700, t0 = performance.now();
+  if (_estRAF) cancelAnimationFrame(_estRAF);
+  function step(now){
+    const p = Math.min(1, (now - t0) / dur);
+    const e = 1 - Math.pow(1 - p, 3);       // easeOutCubic
+    el.textContent = _estText(Math.round(frL + (toL-frL)*e), Math.round(frH + (toH-frH)*e));
+    if (p < 1){ _estRAF = requestAnimationFrame(step); }
+    else { el.textContent = _estText(toL, toH); _estLow = toL; _estHigh = toH; }
+  }
+  _estRAF = requestAnimationFrame(step);
+}
 function updateEstimate(){
   const est = calcEstimate();
   const box = document.getElementById('estBox');
   const sub = document.getElementById('subsidyNote');
   if (est){
-    document.getElementById('estRange').textContent =
-      `${(est.low/10000).toLocaleString('ko-KR')}만 ~ ${(est.high/10000).toLocaleString('ko-KR')}만원`;
     box.classList.add('show');
+    animateEstimate(est.low, est.high);
   } else {
     box.classList.remove('show');
+    _estLow = 0; _estHigh = 0;               // 다음에 나타날 땐 다시 0부터 카운트업
+    if (_estRAF) cancelAnimationFrame(_estRAF);
   }
   // 조기폐차 지원금 힌트 (노후 경유차 = 배출가스 5등급, 대략 2006년 이전 경유)
   if (sel.fuel === '경유' && sel.year && parseInt(sel.year) <= 2006){
