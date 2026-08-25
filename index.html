@@ -14,9 +14,14 @@
 <meta property="og:url" content="https://firstpecha.vercel.app/" />
 <meta property="og:site_name" content="퍼스트 폐차" />
 <meta property="og:locale" content="ko_KR" />
+<meta property="og:image" content="https://firstpecha.vercel.app/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="퍼스트 폐차 – 정부 관허 폐차장 직접 매입" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="퍼스트 폐차 – 내 차 폐차 비교견적" />
 <meta name="twitter:description" content="차 종류·연식만 선택하면 1분 만에 폐차 예상 견적! 탁송비 무료, 24시간 내 말소완료 보장." />
+<meta name="twitter:image" content="https://firstpecha.vercel.app/og.jpg" />
 <!-- favicon (인라인 SVG) -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2310b981'/%3E%3Ctext x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3EP%3C/text%3E%3C/svg%3E" />
 <!-- 구조화 데이터 (검색 노출용) -->
@@ -261,6 +266,153 @@
   .extra-desc{font-size:12.5px;color:var(--gray);margin:2px 0 12px;line-height:1.5}
   .extra .opt-label{margin-top:0}
   .extra .subsidy{margin:12px 0 0}
+
+  /* ============ 디자인 정제(프로 완성도) ============ */
+  /* 라인 아이콘 시스템 (이모지 대체) */
+  svg.ico{stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+  .chip svg.ico{width:15px;height:15px;margin-right:5px;vertical-align:-2px}
+  .btn-primary svg.ico{width:19px;height:19px}
+  .fcta svg.ico{width:16px;height:16px;vertical-align:-3px;margin-right:4px}
+  .sticky-cta a svg.ico{width:18px;height:18px}
+  /* 아이콘 타일 (신뢰 배지·프로모션) */
+  .ico-tile{width:46px;height:46px;border-radius:13px;background:#fff;color:var(--blue);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 10px rgba(11,46,36,.07)}
+  .ico-tile svg{width:23px;height:23px}
+  .promo .ico-tile{background:rgba(255,255,255,.6);color:var(--gold-dark)}
+
+  /* 섹션 상하 여백 통일(8px 그리드) */
+  .trust,.steps,.reviews,.faq{padding:48px 0}
+  .section-title,.trust h2{font-size:22px;font-weight:800;letter-spacing:-.6px}
+  .section-sub{margin-bottom:26px}
+  .trust h2{margin-bottom:22px}
+
+  /* 카드 호버 리프트 + 그림자/보더 정제 */
+  .trust-item,.step,.review{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+  .trust-item{border:1px solid transparent}
+  .trust-item:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(11,46,36,.08);border-color:#dcefe6}
+  .step:hover,.review:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(11,46,36,.07);border-color:#dcefe6}
+  .quote-card{box-shadow:0 18px 50px rgba(11,46,36,.18)}
+
+  /* 접근성 포커스 링 */
+  a:focus-visible,button:focus-visible,summary:focus-visible,.opt:focus-visible,input:focus-visible,select:focus-visible{
+    outline:2px solid var(--blue);outline-offset:2px;border-radius:8px}
+
+  /* 스티키 CTA — 그린 톤 통일(노란색 제거) */
+  .sticky-cta{border-top:1px solid var(--line);box-shadow:0 -6px 24px rgba(11,46,36,.08)}
+  .sticky-cta a{transition:transform .12s ease,box-shadow .15s ease,background .15s ease}
+  .sticky-cta a:active{transform:translateY(1px)}
+  .sticky-cta .kakao{background:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(16,185,129,.28)}
+  .sticky-cta .kakao:hover{background:var(--blue-dark)}
+  .sticky-cta .call{background:#fff;color:var(--blue);border:1.5px solid var(--blue)}
+  .sticky-cta .call:hover{background:var(--blue-soft)}
+
+  /* 헤더 CTA 인터랙션 */
+  .nav-cta{transition:background .15s,color .15s}
+  .nav-cta:hover{background:var(--blue);color:#fff}
+  .fcta{transition:background .15s,color .15s}
+  .fcta:hover{background:var(--blue);color:#fff}
+
+  /* 신뢰 배지 텍스트 정렬(아이콘 타일용) */
+  .trust-item{align-items:flex-start;padding:18px}
+  .trust-item .txt-b{padding-top:1px}
+
+  /* FAQ 열림 애니메이션 톤 */
+  summary{transition:color .15s}
+  summary:hover{color:var(--blue)}
+
+  /* 모달 아이콘 */
+  .modal .ico svg{width:52px;height:52px;color:var(--blue)}
+  .modal{box-shadow:0 24px 60px rgba(11,46,36,.28);animation:pop .25s ease}
+
+  /* 섹션 제목 액센트 바 */
+  .section-title,.trust h2{position:relative;padding-bottom:14px}
+  .section-title::after,.trust h2::after{content:"";position:absolute;left:50%;bottom:0;
+    transform:translateX(-50%);width:34px;height:3px;border-radius:2px;background:var(--gold)}
+
+  /* 후기 카드 리디자인 (아바타·별점·가격 뱃지) */
+  .review{background:#fff;padding:18px}
+  .r-head{display:flex;align-items:center;gap:12px;margin-bottom:11px}
+  .r-avatar{width:42px;height:42px;border-radius:50%;background:var(--blue-soft);color:var(--blue-dark);
+    font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .r-meta{display:flex;flex-direction:column;gap:3px;min-width:0}
+  .r-meta .car{font-weight:700;font-size:14px;line-height:1.2}
+  .r-meta .stars{color:#f5a623;font-size:12px;letter-spacing:1.5px}
+  .review .txt{font-size:13.5px;color:#374151;line-height:1.6;margin:0}
+  .r-foot{margin-top:12px}
+  .price-badge{display:inline-flex;align-items:center;gap:5px;background:var(--blue-soft);
+    color:var(--blue-dark);font-weight:800;font-size:13px;padding:6px 13px;border-radius:999px}
+  .price-badge svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.9}
+
+  /* 다크 그린 푸터 (프로 마감) */
+  footer{background:var(--navy);color:rgba(255,255,255,.72);padding:44px 0 40px}
+  footer .fcta{background:var(--blue);color:#fff;border:none;box-shadow:0 6px 18px rgba(16,185,129,.3)}
+  footer .fcta:hover{background:var(--blue-dark);color:#fff}
+  .foot-brand{margin:24px 0 18px}
+  .foot-logo{font-family:'Wanted Sans Variable','Wanted Sans',sans-serif;font-weight:800;font-size:19px;color:#fff;letter-spacing:-.5px}
+  .foot-logo b{color:var(--gold)}
+  .foot-brand p{font-size:13px;color:rgba(255,255,255,.6);margin-top:7px;line-height:1.6}
+  footer .biz{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;margin-top:0;color:rgba(255,255,255,.55);font-size:12px;line-height:1.9}
+  footer .biz b{color:rgba(255,255,255,.85)}
+  footer a{color:rgba(255,255,255,.78);text-decoration:none}
+  footer a:hover{color:#fff}
+  footer .biz a{color:rgba(255,255,255,.7)}
+
+  /* 헤더 브랜드 로고 마크 */
+  .logo{display:inline-flex;align-items:center;gap:8px}
+  .logo .logo-mark{width:27px;height:27px;border-radius:8px;background:var(--blue);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0;
+    box-shadow:0 3px 8px rgba(16,185,129,.35)}
+  /* 판매 과정 번호 강조 */
+  .step .num{box-shadow:0 4px 10px rgba(16,185,129,.3)}
+
+  /* 🔐 간편인증 즉시견적 (선택) */
+  .auth-box{border:1.5px dashed var(--blue);border-radius:14px;margin-top:14px;background:var(--blue-soft);overflow:hidden}
+  .auth-box>summary{padding:15px 16px;font-size:14.5px;font-weight:800;color:var(--navy);cursor:pointer;
+    list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .auth-box>summary::-webkit-details-marker{display:none}
+  .auth-sum{display:inline-flex;align-items:center;gap:8px}
+  .auth-sum svg{width:18px;height:18px;color:var(--blue-dark)}
+  .auth-box>summary em{font-weight:600;font-style:normal;color:var(--gray);font-size:12px;white-space:nowrap}
+  .auth-box .auth-body{padding:6px 16px 18px;background:#fff}
+  .auth-desc{font-size:12.5px;color:var(--gray);line-height:1.65;margin:12px 0 14px}
+  .auth-box .opt-label{margin-top:10px}
+  .auth-box .btn-primary{height:50px;font-size:16px;margin-top:8px}
+  .auth-status{font-size:13px;color:var(--blue-dark);font-weight:600;margin:12px 2px 0;line-height:1.55;text-align:center;white-space:pre-line}
+  .auth-status.err{color:#dc2626}
+  #aEstBox{margin-top:14px;margin-bottom:0}
+  /* 주민번호 2칸 (뒷자리 마스킹) */
+  .rrn-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .rrn-in{flex:1;min-width:0;height:54px;border:1.5px solid var(--line);border-radius:12px;
+    padding:0 16px;font-size:16px;font-family:inherit;color:var(--ink);background:#fff;transition:border-color .15s}
+  .rrn-in:focus{outline:none;border-color:var(--blue)}
+  .rrn-in::placeholder{color:#9aa3af}
+  .rrn-dash{color:var(--gray);font-weight:700;flex-shrink:0}
+  /* 뒷자리 입력값만 마스킹(자동채우기 방지 위해 password 대신 CSS 사용) */
+  .rrn-mask{-webkit-text-security:disc;text-security:disc}
+  /* 완료 모달 유도 버튼 */
+  .modal .m-primary{width:100%;height:52px;border:none;border-radius:12px;background:var(--blue);color:#fff;
+    font-weight:800;font-size:16px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;
+    box-shadow:0 8px 22px rgba(16,185,129,.35);transition:background .15s,transform .12s}
+  .modal .m-primary svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8}
+  .modal .m-primary:hover{background:var(--blue-dark)} .modal .m-primary:active{transform:translateY(1px)}
+  .modal .m-secondary{width:100%;height:42px;border:none;background:none;color:var(--gray);font-size:13.5px;
+    font-weight:600;cursor:pointer;font-family:inherit;margin-top:6px}
+  .modal .m-secondary:hover{color:var(--ink)}
+
+  /* 간편인증 박스 강조 (눈에 띄게) */
+  .auth-box{border:2px solid var(--blue);box-shadow:0 6px 20px rgba(16,185,129,.14)}
+  .auth-box>summary{background:linear-gradient(135deg,#ecfdf5,#d1fae5)}
+  .auth-badge{display:inline-block;background:var(--blue);color:#fff;font-size:10.5px;font-weight:800;
+    padding:3px 8px;border-radius:999px;margin-left:7px;vertical-align:2px;box-shadow:0 2px 6px rgba(16,185,129,.35)}
+
+  /* 간편인증 안전 안내 박스 */
+  .auth-trust{background:#f0faf5;border:1px solid #c9ebdc;border-radius:10px;padding:12px 14px;margin:0 0 16px}
+  .auth-trust .th{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--blue-dark);margin-bottom:9px}
+  .auth-trust .th svg{width:16px;height:16px}
+  .auth-trust ul{list-style:none;margin:0;padding:0}
+  .auth-trust li{font-size:12px;color:#334155;line-height:1.55;padding-left:18px;position:relative;margin:5px 0}
+  .auth-trust li::before{content:"✓";position:absolute;left:0;top:0;color:var(--blue);font-weight:900}
+  .auth-trust li b{color:#0f172a}
 </style>
 </head>
 <body>
@@ -268,7 +420,7 @@
 <!-- HEADER -->
 <header>
   <div class="nav">
-    <a href="#quote" class="logo">퍼스트<span> 폐차</span></a>
+    <a href="#quote" class="logo"><span class="logo-mark">P</span>퍼스트<span> 폐차</span></a>
     <a class="nav-cta" href="#quote">1분 견적받기</a>
   </div>
 </header>
@@ -277,11 +429,11 @@
 <section class="hero" id="quote">
   <div class="wrap">
     <h1>내 차 폐차하면<br><b>얼마</b> 받을 수 있을까?</h1>
-    <p class="sub">정부 관허 폐차장이 <b style="color:#fff">직접 매입</b> — 차량번호만 남기면 카톡으로 견적을 보내드려요.</p>
+    <p class="sub">정부 관허 폐차장이 <b style="color:#fff">직접 매입</b> — 차량번호만 남기면 문자·카톡으로 견적을 보내드려요.</p>
     <div class="trust-strip">
-      <span class="chip">🏛️ 정부 관허 폐차장</span>
-      <span class="chip">🚛 당일 견인</span>
-      <span class="chip">📄 말소 100% 대행</span>
+      <span class="chip"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>정부 관허 폐차장</span>
+      <span class="chip"><svg class="ico" viewBox="0 0 24 24"><path d="M3 6h11v9H3z"/><path d="M14 9h4l3 3v3h-7z"/><circle cx="7" cy="18.5" r="1.6"/><circle cx="17.5" cy="18.5" r="1.6"/></svg>당일 견인</span>
+      <span class="chip"><svg class="ico" viewBox="0 0 24 24"><path d="M6 3h7l5 5v13H6z"/><path d="M13 3v5h5"/><path d="M9 13h6M9 16.5h6"/></svg>말소 100% 대행</span>
     </div>
 
     <!-- 견적 폼 -->
@@ -346,7 +498,7 @@
         </select>
       </div>
 
-      <label for="phone">연락처 (카톡 견적 발송)</label>
+      <label for="phone">연락처 (번호만 입력)</label>
       <div class="field">
         <input id="phone" name="phone" type="tel" inputmode="numeric"
                placeholder="010-0000-0000" autocomplete="tel" maxlength="13" />
@@ -357,13 +509,69 @@
         <span>[필수] 견적 상담을 위한 <a href="privacy.html" target="_blank" rel="noopener">개인정보 수집·이용</a>에 동의합니다.</span>
       </label>
 
-      <button class="btn-primary" type="submit" id="submitBtn">⚡️ 카톡으로 견적받기</button>
+      <button class="btn-primary" type="submit" id="submitBtn"><svg class="ico" viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg><span id="submitLabel">무료 견적받기</span></button>
       <p class="quote-note">신청 1분 · 100% 무료 · 판매 권유 전화 없음</p>
     </form>
 
+    <!-- 🔐 간편인증 즉시 정확견적 (선택) -->
+    <details class="auth-box" id="authBox">
+      <summary>
+        <span class="auth-sum"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>간편인증하고 <b>지금 바로 정확견적</b><span class="auth-badge">1분 즉시</span></span>
+        <em>(선택)</em>
+      </summary>
+      <div class="auth-body">
+        <p class="auth-desc">본인 차량이면 간편인증으로 <b>제원 기반 정확 견적</b>을 즉시 확인할 수 있어요.</p>
+        <div class="auth-trust">
+          <div class="th"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>안전하게 조회해요</div>
+          <ul>
+            <li>정부24에서 쓰는 <b>공인 간편인증</b>(카카오·PASS 등)으로 본인확인</li>
+            <li><b>금융·공공기관도 쓰는 검증된 시스템</b>으로 조회 · 전 구간 <b>암호화(AES-256·SSL)</b> 전송</li>
+            <li>주민번호는 <b>조회에만</b> 사용하고 <b>저장하지 않아요</b></li>
+            <li>판매 강요 없이 <b>견적만</b> 확인 (판매 의무 없음)</li>
+          </ul>
+        </div>
+        <label class="opt-label">차량번호</label>
+        <div class="field"><input id="a_carNo" type="text" placeholder="예) 12가3456" maxlength="9" autocomplete="off" /></div>
+        <label class="opt-label">소유자 이름</label>
+        <div class="field"><input id="a_name" type="text" placeholder="예) 홍길동" autocomplete="name" /></div>
+        <label class="opt-label">주민등록번호</label>
+        <div class="rrn-row">
+          <input id="a_rrn1" class="rrn-in" type="text" inputmode="numeric" placeholder="앞 6자리" maxlength="6" autocomplete="off" />
+          <span class="rrn-dash">-</span>
+          <input id="a_rrn2" class="rrn-in rrn-mask" type="text" inputmode="numeric" placeholder="뒤 7자리" maxlength="7" autocomplete="off" />
+        </div>
+        <label class="opt-label">휴대폰번호</label>
+        <div class="field"><input id="a_phone" type="tel" inputmode="numeric" placeholder="010-0000-0000" maxlength="13" autocomplete="tel" /></div>
+        <label class="opt-label">간편인증 수단</label>
+        <div class="field"><select id="a_provider">
+          <option value="1">카카오톡</option>
+          <option value="6">네이버</option>
+          <option value="8">토스</option>
+          <option value="5">통신사 PASS</option>
+          <option value="3">삼성패스</option>
+          <option value="4">KB모바일</option>
+          <option value="7">신한인증서</option>
+          <option value="9">하나인증서</option>
+          <option value="10">NH인증서</option>
+        </select></div>
+        <div id="a_telecomWrap" style="display:none">
+          <label class="opt-label">통신사</label>
+          <div class="field"><select id="a_telecom">
+            <option value="0">SKT</option><option value="1">KT</option><option value="2">LG U+</option>
+          </select></div>
+        </div>
+        <label class="consent"><input type="checkbox" id="a_agree" />
+          <span>[필수] 차량정보 조회를 위한 <b>주민등록번호 수집·이용 및 간편인증</b>에 동의합니다. (조회 후 주민번호 미저장)</span></label>
+        <button type="button" class="btn-primary" id="a_request"><span id="a_requestLabel">간편인증 요청</span></button>
+        <div class="auth-status" id="a_status"></div>
+        <button type="button" class="btn-primary" id="a_complete" style="display:none;background:var(--green)"><span id="a_completeLabel">인증 완료 → 견적 보기</span></button>
+        <div class="est-box" id="aEstBox"><div class="est-range" id="aEstRange">-</div><div class="est-note" id="aEstNote"></div></div>
+      </div>
+    </details>
+
     <!-- 프로모션 -->
     <div class="promo">
-      <span class="g">🎁</span>
+      <span class="ico-tile"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9"/><path d="M12 8v13"/><path d="M12 8S10.5 3.5 8 4.5 9 8 12 8zM12 8s1.5-4.5 4-3.5S15 8 12 8z"/></svg></span>
       <div style="font-size:14px">이번 달 폐차하면<br><b>모바일 기프티콘</b> 드려요</div>
     </div>
   </div>
@@ -374,14 +582,14 @@
   <div class="wrap">
     <h2>퍼스트 폐차로<br>견적받아야 하는 이유</h2>
     <div class="trust-list">
-      <div class="trust-item"><span class="emo">🙅‍♂️</span>
-        <div><b>판매 권유 전화가 없어요</b><p>귀찮은 영업 전화 걱정 없이 견적만 확인하세요.</p></div></div>
-      <div class="trust-item"><span class="emo">🛻</span>
-        <div><b>탁송비가 무료예요</b><p>전국 어디든 무료로 차량을 가지러 가요.</p></div></div>
-      <div class="trust-item"><span class="emo">⏱️</span>
-        <div><b>24시간 내 말소완료 보장</b><p>빠르고 확실하게 말소 처리해 드려요.</p></div></div>
-      <div class="trust-item"><span class="emo">💰</span>
-        <div><b>흥정 없는 확정 견적</b><p>제시 금액 그대로, 감가 없이 입금해요.</p></div></div>
+      <div class="trust-item"><span class="ico-tile"><svg class="ico" viewBox="0 0 24 24"><path d="M4 5c0 8 7 15 15 15l1-4-4-2-2 2c-3-1-5-3-6-6l2-2-2-4-4 1z"/><line x1="4" y1="4" x2="20" y2="20"/></svg></span>
+        <div class="txt-b"><b>판매 권유 전화가 없어요</b><p>귀찮은 영업 전화 걱정 없이 견적만 확인하세요.</p></div></div>
+      <div class="trust-item"><span class="ico-tile"><svg class="ico" viewBox="0 0 24 24"><path d="M3 6h11v9H3z"/><path d="M14 9h4l3 3v3h-7z"/><circle cx="7" cy="18.5" r="1.6"/><circle cx="17.5" cy="18.5" r="1.6"/></svg></span>
+        <div class="txt-b"><b>탁송비가 무료예요</b><p>전국 어디든 무료로 차량을 가지러 가요.</p></div></div>
+      <div class="trust-item"><span class="ico-tile"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>
+        <div class="txt-b"><b>24시간 내 말소완료 보장</b><p>빠르고 확실하게 말소 처리해 드려요.</p></div></div>
+      <div class="trust-item"><span class="ico-tile"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 9.5h14a2.5 2.5 0 012.5 2.5"/><circle cx="16.5" cy="13" r="1.2"/></svg></span>
+        <div class="txt-b"><b>흥정 없는 확정 견적</b><p>제시 금액 그대로, 감가 없이 입금해요.</p></div></div>
     </div>
   </div>
 </section>
@@ -392,7 +600,7 @@
     <h2 class="section-title">판매 과정</h2>
     <p class="section-sub">신청부터 입금까지 이렇게 진행돼요</p>
     <div class="step"><div class="num">1</div><div><b>차 종류 선택</b><p>한 번의 터치로 예상 견적을 바로 확인해요.</p></div></div>
-    <div class="step"><div class="num">2</div><div><b>카톡으로 실시간 견적</b><p>전국 관허 폐차장이 경매에 참여해요.</p></div></div>
+    <div class="step"><div class="num">2</div><div><b>문자·카톡으로 견적 안내</b><p>확인 후 빠르게 견적을 보내드려요.</p></div></div>
     <div class="step"><div class="num">3</div><div><b>판매여부 결정</b><p>5일 안에 편하게 결정하면 돼요.</p></div></div>
     <div class="step"><div class="num">4</div><div><b>흥정없이 판매</b><p>서류와 차키만 넘기면 바로 입금받아요.</p></div></div>
   </div>
@@ -404,21 +612,41 @@
     <h2 class="section-title">판매 후기</h2>
     <p class="section-sub">실제 고객님들의 후기예요</p>
 
-    <div class="review"><div class="top"><span class="car">아반떼 MD 1.6 GDI</span><span class="stars">★★★★★</span></div>
+    <div class="review">
+      <div class="r-head">
+        <div class="r-avatar">김</div>
+        <div class="r-meta"><span class="car">아반떼 MD 1.6 GDI</span><span class="stars">★★★★★</span></div>
+      </div>
       <p class="txt">연락도 빠르고 친절하게 알려주셔서 바로 거래했어요. 아주 만족합니다ㅎㅎ</p>
-      <p class="price">판매가 <b>168만원</b></p></div>
+      <div class="r-foot"><span class="price-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 9h7M8.5 12h7M10 9l2 6 2-6"/></svg>판매가 168만원</span></div>
+    </div>
 
-    <div class="review"><div class="top"><span class="car">쏘나타 하이브리드 2.0</span><span class="stars">★★★★★</span></div>
+    <div class="review">
+      <div class="r-head">
+        <div class="r-avatar">이</div>
+        <div class="r-meta"><span class="car">쏘나타 하이브리드 2.0</span><span class="stars">★★★★★</span></div>
+      </div>
       <p class="txt">완전 빠르고 정확한 거래 감사드립니다. 믿고 맡길 수 있는 폐차 서비스예요.</p>
-      <p class="price">판매가 <b>211만원</b></p></div>
+      <div class="r-foot"><span class="price-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 9h7M8.5 12h7M10 9l2 6 2-6"/></svg>판매가 211만원</span></div>
+    </div>
 
-    <div class="review"><div class="top"><span class="car">베라크루즈 디젤 2WD</span><span class="stars">★★★★★</span></div>
+    <div class="review">
+      <div class="r-head">
+        <div class="r-avatar">박</div>
+        <div class="r-meta"><span class="car">베라크루즈 디젤 2WD</span><span class="stars">★★★★★</span></div>
+      </div>
       <p class="txt">지역 업체보다 훨씬 많이 받았어요~ 제시 금액 그대로 감가 없이 처리됐습니다.</p>
-      <p class="price">판매가 <b>388만원</b></p></div>
+      <div class="r-foot"><span class="price-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 9h7M8.5 12h7M10 9l2 6 2-6"/></svg>판매가 388만원</span></div>
+    </div>
 
-    <div class="review"><div class="top"><span class="car">올 뉴 모닝 디럭스</span><span class="stars">★★★★★</span></div>
+    <div class="review">
+      <div class="r-head">
+        <div class="r-avatar">최</div>
+        <div class="r-meta"><span class="car">올 뉴 모닝 디럭스</span><span class="stars">★★★★★</span></div>
+      </div>
       <p class="txt">신속한 일처리가 좋았습니다. 과정도 신뢰할 수 있었고요. 좋은 거래였습니다.</p>
-      <p class="price">판매가 <b>110만원</b></p></div>
+      <div class="r-foot"><span class="price-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 9h7M8.5 12h7M10 9l2 6 2-6"/></svg>판매가 110만원</span></div>
+    </div>
   </div>
 </section>
 
@@ -458,23 +686,27 @@
       <div class="a">네. 사고차, 침수차, 오래 세워둔 미운행 차량, 열쇠 분실 차량도 폐차 가능합니다. 상태를 알려주시면 상황에 맞게 안내드릴게요.</div></details>
 
     <details><summary>상품 교환권은 어떻게 받나요?</summary>
-      <div class="a">별도 신청 없이 카카오톡으로 발송해드려요. 말소가 완료되면 3일 내로 드리고 있어요.</div></details>
+      <div class="a">별도 신청 없이 문자·카톡으로 보내드려요. 말소가 완료되면 3일 내로 드리고 있어요.</div></details>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="wrap">
-    <a class="fcta" href="#quote">👀 폐차 견적 받아보기</a>
+    <a class="fcta" href="#quote"><svg class="ico" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>폐차 견적 받아보기</a>
+    <div class="foot-brand">
+      <span class="foot-logo">퍼스트 <b>폐차</b></span>
+      <p>정부 관허 폐차장 직접 매입 · 전국 무료 탁송 · 24시간 내 말소</p>
+    </div>
     <div class="biz">
-      <b>퍼스트 폐차</b> · 운영: 대성폐차산업(주) · 대표 박천홍<br>
-      사업자등록번호: 127-81-72375 · 자동차관리사업등록: 제03-4119-000008호<br>
-      주소: 경기도 양주시 남면 삼일로 839-11, 1층<br>
-      TEL <a href="tel:0318688700" style="color:var(--gray)">031-868-8700</a> · FAX 031-868-5454<br>
-      이메일: <a href="mailto:roaddream@nate.com" style="color:var(--gray)">roaddream@nate.com</a><br>
+      <b>대성폐차산업(주)</b> · 대표 박천홍<br>
+      사업자등록번호 127-81-72375 · 자동차관리사업등록 제03-4119-000008호<br>
+      경기도 양주시 남면 삼일로 839-11, 1층<br>
+      TEL <a href="tel:0318688700">031-868-8700</a> · FAX 031-868-5454<br>
+      이메일 <a href="mailto:roaddream@nate.com">roaddream@nate.com</a><br>
       평일 09:00~18:00 · 토 10:00~18:00<br><br>
-      <a href="privacy.html" style="color:var(--gray)">개인정보처리방침</a> | 이용약관<br>
-      2026 ⓒ 퍼스트 폐차. all rights reserved.
+      <a href="privacy.html">개인정보처리방침</a> · 이용약관<br>
+      © 2026 퍼스트 폐차. All rights reserved.
     </div>
   </div>
 </footer>
@@ -482,18 +714,19 @@
 <!-- STICKY CTA -->
 <div class="sticky-cta">
   <div class="inner">
-    <a class="kakao" href="#quote">💬 카톡 견적</a>
-    <a class="call" href="tel:0318688700">📞 전화 문의</a>
+    <a class="kakao" href="#quote"><svg class="ico" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-4 3v-3H4z"/></svg>무료 견적</a>
+    <a class="call" href="tel:0318688700"><svg class="ico" viewBox="0 0 24 24"><path d="M4 4h4l2 5-2 1c1 3 3 5 6 6l1-2 5 2v4c0 1-1 2-2 2C10 22 2 14 2 6c0-1 1-2 2-2z"/></svg>전화 문의</a>
   </div>
 </div>
 
 <!-- MODAL -->
 <div class="modal-bg" id="modal">
   <div class="modal">
-    <div class="ico">✅</div>
+    <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></div>
     <h3>견적 신청 완료!</h3>
-    <p>입력하신 번호로 잠시 후<br>카카오톡 견적을 보내드릴게요.</p>
-    <button onclick="document.getElementById('modal').classList.remove('show')">확인</button>
+    <p>잠시 후 문자·카톡으로 견적을 보내드려요.<br><b style="color:var(--navy)">지금 바로 정확한 예상금액</b>도 확인해보세요.</p>
+    <button class="m-primary" id="modalAuthBtn"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>지금 바로 정확 금액 보기</button>
+    <button class="m-secondary" id="modalClose">괜찮아요, 문자로 받을게요</button>
   </div>
 </div>
 
@@ -615,7 +848,8 @@ form.addEventListener('submit', async function(e){
   if(!agree){ alert('개인정보 수집·이용에 동의해주세요.'); return; }
 
   const btn = document.getElementById('submitBtn');
-  btn.disabled = true; btn.textContent = '신청 중...';
+  const btnLabel = document.getElementById('submitLabel');
+  btn.disabled = true; btnLabel.textContent = '신청 중...';
 
   const receipt = 'PC-' + Date.now();
   const payload = {
@@ -637,6 +871,10 @@ form.addEventListener('submit', async function(e){
     });
     if(!res.ok){ throw new Error('HTTP '+res.status); }
     document.getElementById('modal').classList.add('show');
+    // 무료견적 접수한 차량번호·연락처를 간편인증 칸에도 채워둠(제출 후에도 유지)
+    const _ac=document.getElementById('a_carNo'); if(_ac && !_ac.value) _ac.value=carNo;
+    const _ap=document.getElementById('a_phone'); if(_ap && !_ap.value) _ap.value=phone;
+    window._leadReceipt = receipt;  // 이어서 간편인증하면 이 행을 갱신(중복 방지)
     form.reset();
     // 차급/견적 UI가 되살아났을 때만 초기화 (현재는 숨김 상태라 스킵)
     if(classGrid){ Array.from(classGrid.children).forEach(c=>c.classList.remove('sel')); }
@@ -650,9 +888,126 @@ form.addEventListener('submit', async function(e){
     alert('일시적인 오류로 신청이 접수되지 않았어요.\n잠시 후 다시 시도해주세요.');
     console.error('submit error:', err);
   }finally{
-    btn.disabled = false; btn.textContent = '⚡️ 카톡으로 견적받기';
+    btn.disabled = false; btnLabel.textContent = '무료 견적받기';
   }
 });
+
+/* ====== 🔐 간편인증 즉시 정확견적 (CODEF 자동차등록원부) ====== */
+(function(){
+  const A = id => document.getElementById(id);
+  if (!A('a_request')) return;
+  const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  let _twoWay=null, _params=null;
+
+  // 주민번호 하이픈(6-7), 휴대폰 하이픈
+  A('a_rrn1').addEventListener('input', e=>{ e.target.value=e.target.value.replace(/\D/g,'').slice(0,6); if(e.target.value.length===6) A('a_rrn2').focus(); });
+  A('a_rrn2').addEventListener('input', e=>{ e.target.value=e.target.value.replace(/\D/g,'').slice(0,7); });
+  A('a_phone').addEventListener('input', e=>{ let v=e.target.value.replace(/\D/g,'').slice(0,11); if(v.length<4)e.target.value=v; else if(v.length<8)e.target.value=v.slice(0,3)+'-'+v.slice(3); else e.target.value=v.slice(0,3)+'-'+v.slice(3,7)+'-'+v.slice(7); });
+  A('a_provider').addEventListener('change', e=>{ A('a_telecomWrap').style.display = e.target.value==='5' ? '' : 'none'; });
+  // 위 무료견적 폼의 차량번호·전화번호를 간편인증 칸에 실시간 자동 동기화
+  // (순서 무관 · 사용자가 간편인증 칸을 직접 수정하면 그때부턴 유지)
+  let _carDirty=false, _phoneDirty=false;
+  A('a_carNo').addEventListener('input', ()=>{ _carDirty=true; });
+  A('a_phone').addEventListener('input', ()=>{ _phoneDirty=true; });
+  const syncCar   = ()=>{ var v=A('carNo').value.trim(); if(!_carDirty && v)   A('a_carNo').value = v; };
+  const syncPhone = ()=>{ var v=A('phone').value.trim(); if(!_phoneDirty && v) A('a_phone').value = v; };
+  A('carNo').addEventListener('input', syncCar);
+  A('phone').addEventListener('input', syncPhone);
+  A('authBox').addEventListener('toggle', ()=>{ if(A('authBox').open){ syncCar(); syncPhone(); } });
+  // 완료 모달 → 간편인증 유도 (확인 대신 "정확 금액 보기"→간편인증 자동 열림)
+  const _mAuth=A('modalAuthBtn'), _mClose=A('modalClose');
+  if(_mAuth) _mAuth.addEventListener('click', ()=>{ A('modal').classList.remove('show'); A('authBox').open=true; setTimeout(()=>A('authBox').scrollIntoView({behavior:'smooth',block:'start'}),120); });
+  if(_mClose) _mClose.addEventListener('click', ()=>{ A('modal').classList.remove('show'); });
+
+  function status(msg, err){ const s=A('a_status'); s.textContent=msg||''; s.className='auth-status'+(err?' err':''); }
+  function collect(){
+    const carNo=(A('a_carNo').value||A('carNo').value).trim(), name=A('a_name').value.trim();
+    const rrn=(A('a_rrn1').value+A('a_rrn2').value).replace(/\D/g,''), phone=A('a_phone').value.replace(/\D/g,'');
+    const provider=A('a_provider').value, telecom=A('a_telecom').value;
+    if(!carNo){ status('차량번호를 입력해주세요.', true); A('a_carNo').focus(); return null; }
+    if(!name){ status('소유자 이름을 입력해주세요.', true); return null; }
+    if(rrn.length!==13){ status('주민등록번호 13자리를 정확히 입력해주세요.', true); return null; }
+    if(phone.length<10){ status('휴대폰번호를 정확히 입력해주세요.', true); return null; }
+    if(!A('a_agree').checked){ status('주민번호 수집·간편인증 동의가 필요해요.', true); return null; }
+    return { carNo, ownerName:name, identity:rrn, phoneNo:phone, loginTypeLevel:provider, telecom: provider==='5'?telecom:'' };
+  }
+  const weight = mt => { mt=mt||''; if(/특수/.test(mt))return 2000; if(/화물/.test(mt))return 1750; if(/승합/.test(mt))return 1800; if(/대형/.test(mt))return 1650; if(/중형/.test(mt))return 1450; if(/소형|경형/.test(mt))return 1150; return 1400; };
+  // 차명 기반 정밀 공차중량 DB (관리자 계산기와 동일)
+  const CAR_DB = {
+    '현대':{'캐스퍼':900,'아토스':830,'베르나':1050,'엑센트':1100,'클릭':1100,'라비타':1250,'베뉴':1250,'아반떼':1300,'아반떼XD':1200,'i30':1320,'벨로스터':1300,'쏘나타':1450,'EF쏘나타':1350,'NF쏘나타':1450,'그랜저':1650,'그랜저XG':1600,'아슬란':1650,'에쿠스':2050,'제네시스(구)':1950,'아이오닉':1450,'아이오닉5':1900,'아이오닉6':1900,'넥쏘':1900,'코나':1350,'투싼':1550,'싼타페':1750,'맥스크루즈':1950,'베라크루즈':2100,'팰리세이드':2000,'갤로퍼':1900,'테라칸':2150,'트라제XG':1800,'스타렉스':2000,'스타리아':2100,'포터':1700,'리베로':1650},
+    '기아':{'모닝':900,'레이':1050,'비스토':800,'프라이드':1050,'리오':1100,'쎄라토':1200,'스펙트라':1150,'K3':1250,'쏘울':1250,'스토닉':1200,'K5':1450,'로체':1400,'옵티마':1350,'K7':1600,'오피러스':1750,'K8':1650,'K9':1950,'엔터프라이즈':1850,'니로':1550,'셀토스':1350,'스포티지':1550,'쏘렌토':1800,'모하비':2300,'카렌스':1500,'카니발':2100,'카스타':1700,'봉고':1700,'프레지오':2000,'레토나':1700,'스팅어':1750,'EV6':2000,'EV9':2500},
+    '제네시스':{'G70':1650,'G80':1950,'G90':2150,'EQ900':2100,'GV60':2100,'GV70':1900,'GV80':2150},
+    '쉐보레':{'티코':640,'마티즈':800,'스파크':950,'칼로스':1000,'젠트라':1100,'아베오':1150,'라노스':1050,'누비라':1200,'라세티':1200,'크루즈':1350,'레간자':1350,'매그너스':1450,'토스카':1500,'말리부':1500,'알페온':1700,'레조':1450,'올란도':1650,'윈스톰':1800,'캡티바':1900,'트랙스':1350,'트레일블레이저':1450,'이쿼녹스':1750,'트래버스':2100,'콜로라도':2100,'다마스':1000,'라보':1000},
+    '르노':{'SM3':1250,'SM5':1450,'SM6':1450,'SM7':1550,'QM3':1300,'QM5':1650,'QM6':1650,'XM3':1300,'클리오':1200,'캡처':1300,'마스터':2200,'조에':1500,'트위지':470},
+    'KG모빌리티(쌍용)':{'티볼리':1350,'티볼리에어':1400,'코란도':1550,'코란도C':1550,'코란도스포츠':1900,'코란도투리스모':2300,'렉스턴':2050,'렉스턴스포츠':2100,'토레스':1650,'체어맨':1950,'액티언':1750,'액티언스포츠':1900,'카이런':2000,'로디우스':2200,'무쏘':1900,'무쏘스포츠':2000,'이스타나':2200},
+    '벤츠':{'A클래스':1400,'B클래스':1500,'C클래스':1550,'E클래스':1700,'S클래스':2000,'CLA':1450,'CLS':1800,'GLA':1500,'GLB':1650,'GLC':1850,'GLE':2150,'GLS':2400,'G클래스':2500,'스프린터':2500},
+    'BMW':{'1시리즈':1400,'2시리즈':1450,'3시리즈':1550,'4시리즈':1600,'5시리즈':1700,'6시리즈':1850,'7시리즈':2000,'X1':1550,'X2':1550,'X3':1850,'X4':1900,'X5':2150,'X6':2200,'X7':2400,'Z4':1500},
+    '아우디':{'A3':1400,'A4':1550,'A5':1650,'A6':1750,'A7':1850,'A8':1950,'Q2':1450,'Q3':1550,'Q5':1850,'Q7':2150,'Q8':2300,'TT':1400},
+    '폭스바겐':{'폴로':1250,'골프':1350,'제타':1400,'파사트':1550,'아테온':1650,'티구안':1650,'투아렉':2200},
+    '미니':{'쿠퍼':1250,'클럽맨':1400,'컨트리맨':1450},
+    '렉서스':{'CT':1450,'IS':1600,'ES':1700,'GS':1750,'LS':2100,'UX':1600,'NX':1800,'RX':2050,'GX':2350},
+    '토요타':{'코롤라':1350,'프리우스':1400,'캠리':1550,'아발론':1650,'RAV4':1650,'하이랜더':2050,'시에나':2100,'86':1300},
+    '혼다':{'시빅':1350,'어코드':1500,'CR-V':1600,'파일럿':2000,'오딧세이':2000},
+    '볼보':{'S60':1650,'S90':1850,'V60':1700,'XC40':1700,'XC60':1900,'XC90':2150},
+    '닛산':{'알티마':1500,'맥시마':1600,'무라노':1850,'로그':1600,'큐브':1250,'370Z':1500},
+    '지프':{'레니게이드':1500,'컴패스':1550,'체로키':1800,'그랜드체로키':2200,'랭글러':1900},
+    '테슬라':{'모델3':1800,'모델Y':2000,'모델S':2100,'모델X':2350},
+    '포드':{'포커스':1350,'몬데오':1600,'머스탱':1700,'익스플로러':2150,'익스페디션':2600},
+    '랜드로버':{'이보크':1900,'디스커버리스포츠':1900,'디스커버리':2200,'레인지로버':2500,'레인지로버스포츠':2400},
+    '푸조':{'208':1200,'2008':1300,'3008':1550,'5008':1750,'508':1550}
+  };
+  let _flatW=null;
+  const flatW = ()=>{ if(_flatW)return _flatW; _flatW={}; for(const b in CAR_DB)for(const m in CAR_DB[b])_flatW[m]=CAR_DB[b][m]; return _flatW; };
+  // 차명(예:"그랜저(GRANDEUR)")에서 DB 모델명 매칭 → 실제 공차중량 (긴 이름 우선)
+  const weightByName = name => {
+    if(!name) return null;
+    const n = String(name).replace(/\(.*?\)/g,'').replace(/\s/g,'');
+    const map = flatW(), keys = Object.keys(map).sort((a,b)=>b.length-a.length);
+    for(const k of keys){ if(n.includes(k.replace(/\s/g,''))) return map[k]; }
+    return null;
+  };
+
+  A('a_request').addEventListener('click', async ()=>{
+    const p=collect(); if(!p) return; _params=p;
+    const btn=A('a_request'), lbl=A('a_requestLabel'); btn.disabled=true; lbl.textContent='요청 중...'; status('');
+    try{
+      const r=await fetch('/api/vehicle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({phase:'request'},p))});
+      const j=await r.json();
+      if(j.status==='need_auth'){ _twoWay=j.twoWayInfo; const prov=A('a_provider').options[A('a_provider').selectedIndex].text;
+        status(`📲 ${prov} 앱으로 인증 요청을 보냈어요. 휴대폰에서 승인한 뒤 아래 [인증 완료]를 눌러주세요.`);
+        A('a_complete').style.display=''; btn.style.display='none';
+      } else if(j.status==='ok'){ result(j.vehicle); }
+      else { status(j.message||'조회에 실패했어요. 정보를 확인해주세요.', true); }
+    }catch(e){ status('일시적 오류가 발생했어요. 잠시 후 다시 시도해주세요.', true); }
+    finally{ btn.disabled=false; lbl.textContent='간편인증 요청'; }
+  });
+
+  A('a_complete').addEventListener('click', async ()=>{
+    if(!_twoWay||!_params) return;
+    const btn=A('a_complete'), lbl=A('a_completeLabel'); btn.disabled=true; lbl.textContent='확인 중...';
+    try{
+      const r=await fetch('/api/vehicle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({phase:'approve',twoWayInfo:_twoWay},_params))});
+      const j=await r.json();
+      if(j.status==='ok'){ result(j.vehicle); }
+      else if(j.status==='need_auth'){ status('아직 앱에서 승인이 안 됐어요. 승인 후 다시 눌러주세요.', true); btn.disabled=false; lbl.textContent='인증 완료 → 견적 보기'; return; }
+      else { status(j.message||'인증에 실패했어요.', true); }
+    }catch(e){ status('일시적 오류가 발생했어요.', true); }
+    finally{ btn.disabled=false; lbl.textContent='인증 완료 → 견적 보기'; }
+  });
+
+  async function result(v){
+    const w=weightByName(v.carName)||weight(v.modelType), scrap=w*SCRAP_PRICE, cat=catalystByYear(v.yearModel);
+    const low=Math.round((scrap*0.85+cat)/10000)*10000, high=Math.round((scrap*1.15+cat)/10000)*10000;
+    A('a_complete').style.display='none'; status('');
+    A('aEstBox').classList.add('show');
+    A('aEstRange').textContent = `${(low/10000).toLocaleString('ko-KR')}만 ~ ${(high/10000).toLocaleString('ko-KR')}만원`;
+    A('aEstNote').innerHTML = `${esc(v.carName)} · ${esc(v.yearModel)}년식<br>정확한 금액·세부사항은 전화/문자로 안내드릴게요.`;
+    // 저장은 서버리스(/api/lead)로 — 무료견적 행이 있으면 갱신, 없으면 신규(중복 방지)
+    const body={ leadReceipt: window._leadReceipt||null, plate:_params.carNo, region:A('region').value||null, phone:_params.phoneNo,
+      carName:v.carName||null, modelType:v.modelType||null, yearModel:v.yearModel||null, estLow:low, estHigh:high };
+    try{ await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); window._leadReceipt=null; }catch(e){}
+  }
+})();
 </script>
 </body>
 </html>

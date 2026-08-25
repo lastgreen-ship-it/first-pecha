@@ -133,6 +133,36 @@
   .cc-precise>div{padding:0 12px 12px}
   .subsidy-hint{background:#ecfdf5;border:1px solid #a7f3d0;color:#047857;border-radius:8px;padding:9px 12px;font-size:12.5px;font-weight:600;margin:12px 0}
   .d-calc{border:1px solid var(--blue);background:#e7f7f0;color:var(--blue);border-radius:8px;padding:9px 14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+
+  /* ============ 디자인 정제(브랜드 톤 통일) ============ */
+  :root{--navy:#0b2e24;--blue-dark:#059669;--blue-soft:#e7f7f0}
+  /* 브랜드 로고 마크 (고객 페이지와 통일) */
+  .brand-mark{width:25px;height:25px;border-radius:7px;background:var(--blue);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;
+    margin-right:9px;box-shadow:0 2px 7px rgba(16,185,129,.4)}
+  .topbar .t{display:flex;align-items:center}
+  .login-card .logo{display:flex;align-items:center;justify-content:center;gap:8px}
+  .login-card .logo .brand-mark{margin-right:0;width:28px;height:28px;font-size:15px}
+  /* 상단바 블러 */
+  .topbar{background:rgba(255,255,255,.95);backdrop-filter:blur(8px)}
+  /* 버튼·컨트롤 인터랙션 통일 */
+  .topbar button,.toolbar .filter,.d-cancel,.d-save,.d-calc,.memo-add button,#c_calc,.tab,.status-sel{
+    transition:background .15s,color .15s,border-color .15s,box-shadow .15s,transform .1s}
+  .toolbar .filter:hover:not(.on){border-color:var(--blue);color:var(--blue)}
+  .topbar button:hover{border-color:var(--blue);color:var(--blue)}
+  .tab:hover{color:var(--blue)}
+  .d-calc:hover{background:#d7f0e6}
+  .d-save:hover:not(:disabled),#c_calc:hover{background:var(--blue-dark)}
+  .d-save:active,#c_calc:active,.d-calc:active{transform:translateY(1px)}
+  /* 포커스 링(접근성) */
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+    outline:2px solid var(--blue);outline-offset:2px;border-radius:6px}
+  /* 카드·표 그림자 정제 + 호버 */
+  .stat{box-shadow:0 1px 3px rgba(17,24,39,.04);transition:box-shadow .18s,transform .18s}
+  .stat:hover{box-shadow:0 8px 20px rgba(11,46,36,.08);transform:translateY(-2px)}
+  .stat b{letter-spacing:-.5px}
+  .table-wrap,.calc-card{box-shadow:0 2px 12px rgba(17,24,39,.05)}
+  th{letter-spacing:.2px}
 </style>
 </head>
 <body>
@@ -140,7 +170,7 @@
 <!-- 로그인 화면 -->
 <div id="login">
   <form class="login-card" id="loginForm">
-    <div class="logo">퍼스트<span style="color:#111827"> 폐차</span> 관리자</div>
+    <div class="logo"><span class="brand-mark">P</span><span>퍼스트<span style="color:#111827"> 폐차</span> 관리자</span></div>
     <div class="sub">견적 문의 관리 페이지</div>
     <input id="email" type="email" placeholder="이메일" autocomplete="username" />
     <input id="password" type="password" placeholder="비밀번호" autocomplete="current-password" />
@@ -153,7 +183,7 @@
 <div id="dash">
   <div class="topbar">
     <div class="bar">
-      <div class="t">퍼스트<span> 폐차</span> · 관리자</div>
+      <div class="t"><span class="brand-mark">P</span>퍼스트<span> 폐차</span> · 관리자</div>
       <div class="right">
         <span id="userEmail"></span>
         <button id="logoutBtn">로그아웃</button>
@@ -287,6 +317,21 @@
     <div class="modal-body">
       <div class="d-info" id="dInfo"></div>
       <div class="d-fields">
+        <label class="d-label">차종 (조회 후 기록)
+          <input id="dCarModel" type="text" placeholder="예: 쏘나타, 포터" />
+        </label>
+        <label class="d-label">연식 (등록연도)
+          <input id="dYear" type="number" inputmode="numeric" placeholder="예: 2015" />
+        </label>
+        <label class="d-label">연료
+          <select id="dFuel">
+            <option value="">미입력</option>
+            <option>휘발유</option>
+            <option>경유</option>
+            <option>LPG</option>
+            <option>전기·하이브리드</option>
+          </select>
+        </label>
         <label class="d-label">진행 단계
           <select id="dStatus">
             <option value="new">신규</option>
@@ -315,7 +360,10 @@
       </div>
     </div>
     <div class="modal-foot">
+      <button class="d-calc" id="dLookupBtn">🔍 자동차365 조회</button>
       <button class="d-calc" id="dCalcBtn">🧮 이 차로 계산</button>
+      <button class="d-calc" id="dSmsCopy">📋 견적문자 복사</button>
+      <button class="d-calc" id="dSmsOpen">💬 문자앱 열기</button>
       <span class="d-saved" id="dSaved"></span>
       <button class="d-cancel" id="dCancel">닫기</button>
       <button class="d-save" id="dSave">저장</button>
@@ -415,7 +463,11 @@ function carLabel(l, icons){
   const ic = icons ? ((icons.memo?' <span title="메모 있음">📝</span>':'') + (icons.overdue?' <span class="overdue" title="연락 예정일 지남">🔔</span>':'')) : '';
   return `<div>${esc(main)}${ic}</div>` + (sub ? `<div class="sub">${esc(sub)}</div>` : '');
 }
-function yearLabel(y){ return y ? esc(YEAR_LABEL[y] || y) : '<span class="muted">미입력</span>'; }
+function yearLabel(y){
+  if(!y) return '<span class="muted">미입력</span>';
+  if(YEAR_LABEL[y]) return esc(YEAR_LABEL[y]);
+  return esc(/^\d{4}$/.test(String(y)) ? y+'년' : y);   // 담당자가 기록한 실제 연도
+}
 function fuelCell(l){
   const { fuel } = parseCar(l);
   const y = parseInt(l.car_year) || 0;
@@ -565,6 +617,10 @@ function openDetail(id){
   const l = allLeads.find(x => String(x.id) === String(id)); if (!l) return;
   curDetailId = l.id;
   $('dInfo').innerHTML = detailInfoHtml(l);
+  const pc = parseCar(l);                       // 차종·연료 분리
+  $('dCarModel').value = pc.model || pc.cls || '';
+  $('dYear').value = l.car_year || '';
+  $('dFuel').value = pc.fuel || '';
   $('dStatus').value = l.status || 'new';
   $('dFinal').value = l.final_price ? Math.round(l.final_price/10000) : '';
   $('dFollow').value = l.followup_at ? String(l.followup_at).slice(0,10) : '';
@@ -588,12 +644,60 @@ $('dMemoAdd').addEventListener('click', () => {
   $('dMemo').focus();
 });
 $('dMemoNew').addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); $('dMemoAdd').click(); } });
+// 📋 견적 문자 메시지 자동 작성 (확정매입가 우선, 없으면 예상견적)
+function buildQuoteMsg(l){
+  const plate = (l && l.plate || '').trim() || '고객님 차량';
+  const fv = $('dFinal').value.trim();
+  let priceLine;
+  if (fv) priceLine = `폐차 매입가는 ${Number(fv).toLocaleString('ko-KR')}만원으로 안내드립니다.`;
+  else if (l && l.est_low && l.est_high) priceLine = `폐차 예상 견적은 ${Math.round(l.est_low/10000)}~${Math.round(l.est_high/10000)}만원입니다.`;
+  else return null;
+  return `[퍼스트 폐차] 안녕하세요, 문의주신 차량(${plate}) 폐차 견적 안내드립니다.\n${priceLine}\n탁송비 무료 · 당일 견인 · 24시간 내 말소 완료해드려요.\n진행 원하시면 회신 주세요. ☎ 031-868-8700`;
+}
+// 📋 견적문자 복사
+$('dSmsCopy').addEventListener('click', () => {
+  const l = allLeads.find(x => String(x.id) === String(curDetailId));
+  const msg = buildQuoteMsg(l);
+  if (!msg){ alert('확정 매입가를 먼저 입력하거나 계산해주세요.'); return; }
+  const done = () => { $('dSaved').textContent = '📋 견적문자 복사됨 · 카톡/문자에 붙여넣기'; };
+  if (navigator.clipboard) navigator.clipboard.writeText(msg).then(done).catch(()=>{ prompt('아래 메시지를 복사하세요', msg); });
+  else prompt('아래 메시지를 복사하세요', msg);
+});
+// 💬 문자앱 열기 (모바일: 번호+내용 자동 입력된 문자앱 실행)
+$('dSmsOpen').addEventListener('click', () => {
+  const l = allLeads.find(x => String(x.id) === String(curDetailId));
+  const msg = buildQuoteMsg(l);
+  if (!msg){ alert('확정 매입가를 먼저 입력하거나 계산해주세요.'); return; }
+  const phone = (l && l.phone || '').replace(/\D/g,'');
+  window.location.href = `sms:${phone}?body=${encodeURIComponent(msg)}`;
+});
+// 🔍 자동차365 조회: 차량번호를 클립보드에 복사 + 조회 페이지 새 탭 열기 (담당자가 붙여넣기만)
+$('dLookupBtn').addEventListener('click', () => {
+  const l = allLeads.find(x => String(x.id) === String(curDetailId));
+  const plate = (l && l.plate || '').trim();
+  const url = 'https://www.car365.go.kr/ccpt/schdcar/unityhstry/vhrnoView.do?infoScopeSeCd=03&_menuId=M630206000&moblYn=Y';
+  const go = () => { window.open(url, '_blank', 'noopener'); };
+  if (plate && navigator.clipboard) {
+    navigator.clipboard.writeText(plate).then(() => {
+      $('dSaved').textContent = `📋 "${plate}" 복사됨 · 자동차365에 붙여넣기(Ctrl+V)`;
+      go();
+    }).catch(go);
+  } else { go(); }
+});
 $('dSave').addEventListener('click', async () => {
   if (!curDetailId) return;
   const btn = $('dSave'); btn.disabled = true; btn.textContent = '저장 중...';
   const fv = $('dFinal').value.trim();
+  // 차종·연료는 기존 스키마(car_model="차명 · 연료")에 맞춰 저장 → 목록/뱃지 자동 반영
+  const cm = $('dCarModel').value.trim(), fuel = $('dFuel').value;
+  let carModel = null;
+  if (cm && fuel) carModel = cm + ' · ' + fuel;
+  else if (cm) carModel = cm;
+  else if (fuel) carModel = ' · ' + fuel;
   const payload = {
     status: $('dStatus').value,
+    car_model: carModel,
+    car_year: $('dYear').value.trim() || null,
     final_price: fv ? Math.round(parseFloat(fv)*10000) : null,
     followup_at: $('dFollow').value || null,
     car_condition: $('dCond').value.trim() || null,
