@@ -52,6 +52,7 @@
   .b-contacted{background:#fef3c7;color:#92400e}
   .b-done{background:#dcfce7;color:#166534}
   .b-subsidy{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+  .b-auth{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7}
   td.plate .sub{font-weight:500;color:var(--gray);font-size:11px;margin-top:2px}
   .muted{color:#9ca3af;font-weight:400}
   .empty{text-align:center;color:var(--gray);padding:40px;font-size:14px}
@@ -204,6 +205,7 @@
       <button class="filter" data-f="new">신규</button>
       <button class="filter" data-f="inprogress">진행중</button>
       <button class="filter" data-f="done">완료</button>
+      <button class="filter" data-f="auth">🔐 간편인증</button>
       <div class="spacer"></div>
       <input id="searchBox" class="search-box" type="search" placeholder="🔍 전화·차종·지역·메모 검색" />
       <select id="sortSel" class="sort-sel">
@@ -461,7 +463,12 @@ function carLabel(l, icons){
     main = cls || model || '-'; sub = (cls && model) ? model : '';
   }
   const ic = icons ? ((icons.memo?' <span title="메모 있음">📝</span>':'') + (icons.overdue?' <span class="overdue" title="연락 예정일 지남">🔔</span>':'')) : '';
-  return `<div>${esc(main)}${ic}</div>` + (sub ? `<div class="sub">${esc(sub)}</div>` : '');
+  return `<div>${esc(main)}${ic}${sourceBadge(l)}</div>` + (sub ? `<div class="sub">${esc(sub)}</div>` : '');
+}
+// 유입경로 뱃지 (간편인증=본인인증된 정확 차량정보·전환의도 높음)
+function sourceBadge(l){
+  return l.source === '간편인증 정확견적'
+    ? ' <span class="badge b-auth" title="본인 간편인증으로 확인된 차량 (정확 차량정보·전환의도 높음)">🔐 간편인증</span>' : '';
 }
 function yearLabel(y){
   if(!y) return '<span class="muted">미입력</span>';
@@ -513,6 +520,7 @@ function render() {
   let list;
   if (curFilter === 'all') list = allLeads.slice();
   else if (curFilter === 'inprogress') list = allLeads.filter(l => ['contacted','visit','received'].includes(l.status));
+  else if (curFilter === 'auth') list = allLeads.filter(l => l.source === '간편인증 정확견적');
   else list = allLeads.filter(l => l.status === curFilter);
   // 검색 (전화·차종·지역·메모)
   if (searchQ) {
@@ -570,15 +578,16 @@ function csvCell(v){ v = (v==null?'':String(v)); return /[",\n\r]/.test(v) ? '"'
 function exportCSV(){
   const rows = (curList.length ? curList : allLeads);
   if (!rows.length){ alert('내보낼 문의가 없습니다.'); return; }
-  const head = ['접수일시','차량번호','차급','차종','연료','연식','지역','연락처','예상견적(만원)','확정매입가(만원)','진행단계','다음연락일','차량상태','메모','접수번호'];
+  const head = ['접수일시','유입경로','차량번호','차급','차종','연료','연식','지역','연락처','예상견적(만원)','확정매입가(만원)','진행단계','다음연락일','차량상태','메모','접수번호'];
   const YLBL = y => y ? (YEAR_LABEL[y] || y) : '';
   const body = rows.map(l => {
     const { cls, model, fuel } = parseCar(l);
     const st = (STATUSES.find(s => s.v === l.status) || {}).t || l.status || '';
     const est = (l.est_low && l.est_high) ? `${Math.round(l.est_low/10000)}~${Math.round(l.est_high/10000)}` : '';
     const fin = l.final_price ? String(Math.round(l.final_price/10000)) : '';
+    const src = l.source === '간편인증 정확견적' ? '간편인증' : (l.source || '홈페이지');
     return [
-      fmtDate(l.created_at), l.plate||'', cls, model, fuel, YLBL(l.car_year),
+      fmtDate(l.created_at), src, l.plate||'', cls, model, fuel, YLBL(l.car_year),
       l.region||'', l.phone||'', est, fin, st,
       l.followup_at ? String(l.followup_at).slice(0,10) : '', l.car_condition||'',
       (l.memo||'').replace(/\r?\n/g,' / '), l.receipt_no||''
@@ -604,8 +613,8 @@ function detailInfoHtml(l){
     ? ' <span class="badge b-subsidy">🎁 지원금 대상</span>' : '';
   return `
     <div><span class="k">접수일시</span> ${fmtDate(l.created_at)}</div>
-    <div><span class="k">차량번호</span> <b>${esc(plate || '-')}</b></div>
-    <div><span class="k">차종</span> ${carType?esc(carType):'<span class="muted">미확인 (API 연동 시 자동 표시)</span>'}${subsidy}</div>
+    <div><span class="k">차량번호</span> <b>${esc(plate || '-')}</b>${sourceBadge(l)}</div>
+    <div><span class="k">차종</span> ${carType?esc(carType):'<span class="muted">미확인 (간편인증 시 자동 · 자동차365로 조회)</span>'}${subsidy}</div>
     <div><span class="k">연식</span> ${yearLabel(l.car_year)}</div>
     <div><span class="k">연료</span> ${fuel?esc(fuel):'<span class="muted">미입력</span>'}</div>
     <div><span class="k">지역</span> ${esc(l.region||'-')}</div>
