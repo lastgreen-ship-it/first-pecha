@@ -406,6 +406,13 @@
   @keyframes authNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
   .auth-box:not([open]) .auth-go{animation:authNudge 1.3s ease-in-out infinite}
   @media(prefers-reduced-motion:reduce){.auth-box:not([open]) .auth-go{animation:none}}
+  /* 마우스 호버(데스크톱): 들어올리기 + 밝아지기 + 라임 알약 발광 */
+  @media(hover:hover){
+    .auth-box:not([open])>summary{transition:transform .16s,box-shadow .16s,filter .16s}
+    .auth-box:not([open])>summary:hover{transform:translateY(-2px);filter:brightness(1.07);
+      box-shadow:0 12px 26px rgba(11,46,36,.4)}
+    .auth-box:not([open])>summary:hover .auth-go{box-shadow:0 4px 14px rgba(163,230,53,.75)}
+  }
   .auth-sum{display:inline-flex;align-items:center;gap:8px}
   .auth-sum svg{width:18px;height:18px;color:var(--blue-dark)}
   .auth-box>summary em{font-weight:600;font-style:normal;color:var(--gray);font-size:12px;white-space:nowrap}
