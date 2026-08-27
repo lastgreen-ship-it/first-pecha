@@ -393,6 +393,19 @@
     list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px}
   .auth-box>summary::-webkit-details-marker{display:none}
   .auth-box>summary::after{display:none}
+  /* 닫힘 상태 = 확실한 솔리드 버튼 느낌 (눌러보고 싶게) */
+  .auth-box:not([open]){border-color:transparent}
+  .auth-box:not([open])>summary{background:linear-gradient(135deg,#0b2e24,#12805a);color:#fff;
+    box-shadow:0 6px 16px rgba(11,46,36,.28);padding:17px 16px}
+  .auth-box:not([open]) .auth-sum,.auth-box:not([open]) .auth-sum b{color:#fff}
+  .auth-box:not([open]) .auth-sum svg{color:var(--gold)}
+  .auth-box:not([open]) .auth-go{background:var(--gold);color:var(--navy);
+    box-shadow:0 2px 8px rgba(163,230,53,.5);padding:7px 13px}
+  .auth-box:not([open])>summary:active{transform:translateY(1px);box-shadow:0 3px 10px rgba(11,46,36,.3)}
+  /* CTA 화살표 nudge (눌러보라는 신호) */
+  @keyframes authNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+  .auth-box:not([open]) .auth-go{animation:authNudge 1.3s ease-in-out infinite}
+  @media(prefers-reduced-motion:reduce){.auth-box:not([open]) .auth-go{animation:none}}
   .auth-sum{display:inline-flex;align-items:center;gap:8px}
   .auth-sum svg{width:18px;height:18px;color:var(--blue-dark)}
   .auth-box>summary em{font-weight:600;font-style:normal;color:var(--gray);font-size:12px;white-space:nowrap}
