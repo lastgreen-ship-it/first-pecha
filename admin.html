@@ -91,11 +91,11 @@
   /* 상세보기 모달 */
   .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto}
   .modal-bg.show{display:flex}
-  .modal{background:#fff;border-radius:16px;width:100%;max-width:540px;box-shadow:0 20px 60px rgba(0,0,0,.25);margin:auto}
+  .modal{background:#fff;border-radius:16px;width:100%;max-width:560px;box-shadow:0 20px 60px rgba(0,0,0,.25);margin:auto}
   .modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line)}
   .modal-head h3{font-size:17px;font-weight:900}
   .modal-x{border:none;background:none;font-size:18px;cursor:pointer;color:var(--gray)}
-  .modal-body{padding:20px;display:flex;flex-direction:column;gap:14px}
+  .modal-body{padding:24px;display:flex;flex-direction:column;gap:16px}
   .d-info{background:#f9fafb;border:1px solid var(--line);border-radius:10px;padding:14px;font-size:13px;line-height:1.95}
   .d-info .k{color:var(--gray);display:inline-block;min-width:74px}
   .d-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -103,8 +103,10 @@
   .d-label input,.d-label select,.d-label textarea{border:1.5px solid var(--line);border-radius:8px;padding:9px 11px;font-size:14px;font-family:inherit;background:#fff;color:var(--ink)}
   .d-label textarea{resize:vertical;line-height:1.6}
   .d-label input:focus,.d-label select:focus,.d-label textarea:focus{outline:none;border-color:var(--blue)}
-  .modal-foot{display:flex;align-items:center;gap:10px;padding:16px 20px;border-top:1px solid var(--line)}
-  .modal-foot .d-saved{font-size:12px;color:#166534;font-weight:700;margin-right:auto}
+  .modal-foot{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:16px 24px;border-top:1px solid var(--line)}
+  .modal-foot .d-saved{font-size:12px;color:#166534;font-weight:700;margin-right:auto;flex-basis:100%;order:-1;min-height:0}
+  .modal-foot .d-saved:empty{display:none}
+  .modal-foot .d-cancel{margin-left:auto}
   .d-cancel{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
   .d-save{border:none;background:var(--blue);color:#fff;border-radius:8px;padding:9px 18px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
   .d-save:disabled{background:#a9c4f5;cursor:default}
@@ -133,7 +135,7 @@
   .cc-precise[open]>summary{color:var(--ink)}
   .cc-precise>div{padding:0 12px 12px}
   .subsidy-hint{background:#ecfdf5;border:1px solid #a7f3d0;color:#047857;border-radius:8px;padding:9px 12px;font-size:12.5px;font-weight:600;margin:12px 0}
-  .d-calc{border:1px solid var(--blue);background:#e7f7f0;color:var(--blue);border-radius:8px;padding:9px 14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+  .d-calc{border:1px solid var(--blue);background:#e7f7f0;color:var(--blue);border-radius:8px;padding:8px 11px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
 
   /* ============ 디자인 정제(브랜드 톤 통일) ============ */
   :root{--navy:#0b2e24;--blue-dark:#059669;--blue-soft:#e7f7f0}
@@ -362,10 +364,10 @@
       </div>
     </div>
     <div class="modal-foot">
-      <button class="d-calc" id="dLookupBtn">🔍 자동차365 조회</button>
-      <button class="d-calc" id="dCalcBtn">🧮 이 차로 계산</button>
-      <button class="d-calc" id="dSmsCopy">📋 견적문자 복사</button>
-      <button class="d-calc" id="dSmsOpen">💬 문자앱 열기</button>
+      <button class="d-calc" id="dLookupBtn" title="자동차365에서 차량정보 조회">🔍 자동차365</button>
+      <button class="d-calc" id="dCalcBtn" title="이 차량으로 견적 계산">🧮 계산</button>
+      <button class="d-calc" id="dSmsCopy" title="견적 문자 메시지 복사">📋 문자복사</button>
+      <button class="d-calc" id="dSmsOpen" title="문자앱 열기(모바일)">💬 문자앱</button>
       <span class="d-saved" id="dSaved"></span>
       <button class="d-cancel" id="dCancel">닫기</button>
       <button class="d-save" id="dSave">저장</button>
