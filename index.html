@@ -232,6 +232,7 @@
   label.consent{display:flex;align-items:flex-start;gap:8px;margin:2px 0 12px;font-size:12.5px;font-weight:500;color:var(--gray)}
   .consent input{width:18px;height:18px;margin-top:1px;flex-shrink:0;accent-color:var(--blue)}
   .consent a{color:var(--blue);text-decoration:underline}
+  .c-note{display:block;margin-top:3px;font-size:11px;color:#9aa5b4}
   .field-hint{font-size:12px;color:var(--gray);margin:-6px 0 12px 2px}
   .btn-est{width:100%;height:50px;border:1.5px solid var(--blue);border-radius:12px;background:var(--blue-soft);
     color:var(--blue);font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;margin:4px 0 12px;transition:background .15s}
@@ -610,7 +611,7 @@
           </select></div>
         </div>
         <label class="consent"><input type="checkbox" id="a_agree" />
-          <span>[필수] 차량정보 조회를 위한 <b>주민등록번호 수집·이용 및 간편인증</b>에 동의합니다. (조회 후 주민번호 미저장)</span></label>
+          <span>[필수] 차량정보 조회를 위한 <b>주민등록번호 수집·이용 및 간편인증</b>에 동의합니다.<span class="c-note">조회 후 주민번호는 저장하지 않아요</span></span></label>
         <button type="button" class="btn-primary" id="a_request"><span id="a_requestLabel">간편인증 요청</span></button>
         <div class="auth-status" id="a_status"></div>
         <button type="button" class="btn-primary" id="a_complete" style="display:none;background:var(--green)"><span id="a_completeLabel">인증 완료 → 견적 보기</span></button>
