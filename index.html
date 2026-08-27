@@ -392,6 +392,7 @@
   .auth-box>summary{padding:15px 16px;font-size:14.5px;font-weight:800;color:var(--navy);cursor:pointer;
     list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px}
   .auth-box>summary::-webkit-details-marker{display:none}
+  .auth-box>summary::after{display:none}
   .auth-sum{display:inline-flex;align-items:center;gap:8px}
   .auth-sum svg{width:18px;height:18px;color:var(--blue-dark)}
   .auth-box>summary em{font-weight:600;font-style:normal;color:var(--gray);font-size:12px;white-space:nowrap}
@@ -544,8 +545,8 @@
     <!-- 🔐 간편인증 즉시 정확견적 (선택) -->
     <details class="auth-box" id="authBox">
       <summary>
-        <span class="auth-sum"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>간편인증하고 <b>지금 바로 견적확인</b><span class="auth-badge">즉시</span></span>
-        <span class="auth-go">바로 보기 ↓</span>
+        <span class="auth-sum"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>간편인증하고 <b>정확견적</b></span>
+        <span class="auth-go">즉시 확인 →</span>
       </summary>
       <div class="auth-body">
         <p class="auth-desc">본인 차량이면 간편인증으로 <b>제원 기반 정확 견적</b>을 즉시 확인할 수 있어요.</p>
