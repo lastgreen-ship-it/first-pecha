@@ -9,10 +9,11 @@ const SHOP_TEL = '031-868-8700';
 // 고객에게 보낼 문자 (차량번호 개인화) — 수정 가능
 function buildMsg(plate) {
   const car = plate ? `문의주신 차량(${plate})` : '문의주신 차량';
-  return `[퍼스트 폐차] ${car} 견적 감사합니다.
-정확한 폐차 견적은 전화가 가장 빨라요.
+  return `[퍼스트 폐차]
+${car} 견적 요청 감사합니다.
+정확한 폐차 매입가는 전화 상담이 가장 빠르고 정확해요.
 지금 ☎ ${SHOP_TEL} 로 전화주세요!
-정부 관허 폐차장 · 탁송비 무료 · 판매강요 없음`;
+정부 관허 폐차장 · 탁송비 무료 · 판매 강요 없음`;
 }
 
 async function sendSMS(to, text) {
