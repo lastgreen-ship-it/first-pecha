@@ -969,6 +969,8 @@ form.addEventListener('submit', async function(e){
     });
     if(!res.ok){ throw new Error('HTTP '+res.status); }
     document.getElementById('modal').classList.add('show');
+    // 접수 즉시 고객에게 자동 확인 문자 (중복 방지는 서버에서 sms_sent로 처리)
+    try{ fetch('/api/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({receipt_no:receipt, phone, plate:carNo})}); }catch(e){}
     // 무료견적 접수한 차량번호·연락처를 간편인증 칸에도 채워둠(제출 후에도 유지)
     const _ac=document.getElementById('a_carNo'); if(_ac && !_ac.value) _ac.value=carNo;
     const _ap=document.getElementById('a_phone'); if(_ap && !_ap.value) _ap.value=phone;
@@ -1103,7 +1105,13 @@ form.addEventListener('submit', async function(e){
     // 저장은 서버리스(/api/lead)로 — 무료견적 행이 있으면 갱신, 없으면 신규(중복 방지)
     const body={ leadReceipt: window._leadReceipt||null, plate:_params.carNo, region:A('region').value||null, phone:_params.phoneNo,
       carName:v.carName||null, modelType:v.modelType||null, yearModel:v.yearModel||null, estLow:low, estHigh:high };
-    try{ await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); window._leadReceipt=null; }catch(e){}
+    try{
+      const lr=await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      const lj=await lr.json().catch(()=>({}));
+      // 접수번호로 자동 확인 문자 (이미 무료견적서 보냈으면 서버가 중복 차단)
+      if(lj && lj.receipt_no){ fetch('/api/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({receipt_no:lj.receipt_no, phone:_params.phoneNo, plate:_params.carNo})}); }
+      window._leadReceipt=null;
+    }catch(e){}
   }
 })();
 
