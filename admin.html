@@ -111,6 +111,24 @@
   .d-save{border:none;background:var(--blue);color:#fff;border-radius:8px;padding:9px 18px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
   .d-save:disabled{background:#a9c4f5;cursor:default}
   @media(max-width:520px){.d-fields{grid-template-columns:1fr}}
+  /* 계산 결과 인라인 */
+  .calc-inline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;
+    background:#ecfdf5;border:1px solid #a7f3d0;border-radius:10px;padding:10px 14px}
+  .ci-range{font-weight:800;color:#065f46;font-size:14px}
+  .ci-apply{border:none;background:var(--blue);color:#fff;border-radius:8px;padding:8px 12px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .ci-apply:hover{background:var(--blue-dark)}
+  /* 문자 발송 영역 */
+  .sms-box{margin-top:18px;background:#f9fafb;border:1px solid var(--line);border-radius:12px;padding:14px}
+  .sms-head{font-size:13px;font-weight:800;color:var(--ink);margin-bottom:8px}
+  .sms-head span{font-weight:500;color:var(--gray);font-size:11.5px}
+  .sms-box textarea{width:100%;border:1.5px solid var(--line);border-radius:8px;padding:10px 12px;font-size:13.5px;font-family:inherit;line-height:1.6;resize:vertical;background:#fff;color:var(--ink)}
+  .sms-box textarea:focus{outline:none;border-color:var(--blue)}
+  .sms-send-row{display:flex;gap:8px;margin-top:9px}
+  .sms-refill{border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--gray)}
+  .sms-refill:hover{border-color:var(--blue);color:var(--blue)}
+  .sms-send-btn{margin-left:auto;border:none;background:var(--blue);color:#fff;border-radius:8px;padding:9px 18px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 3px 10px rgba(16,185,129,.3)}
+  .sms-send-btn:hover{background:var(--blue-dark)}
+  .sms-send-btn:disabled{background:#a9c4f5;cursor:default}
   /* 검색·정렬·기간통계·메모이력 */
   .search-box{border:1px solid var(--line);border-radius:8px;padding:7px 12px;font-size:13px;font-family:inherit;min-width:210px}
   .search-box:focus{outline:none;border-color:var(--blue)}
@@ -355,6 +373,10 @@
           <input id="dCond" type="text" placeholder="사고/침수/미운행/키분실 등" />
         </label>
       </div>
+      <div class="calc-inline" id="dCalcResult" style="display:none">
+        <span class="ci-range" id="dCalcRange">-</span>
+        <button type="button" class="ci-apply" id="dApplyCalc">확정매입가에 넣기 →</button>
+      </div>
       <label class="d-label">상담 메모 (이력 누적)
         <textarea id="dMemo" rows="6" placeholder="상담 내용·요청사항 등을 자유롭게 기록하세요."></textarea>
       </label>
@@ -362,12 +384,19 @@
         <input id="dMemoNew" type="text" placeholder="새 메모 입력 후 [＋ 추가] → 날짜·시각과 함께 위에 기록" />
         <button type="button" id="dMemoAdd">＋ 추가</button>
       </div>
+
+      <div class="sms-box">
+        <div class="sms-head">📤 고객에게 문자 발송 <span>(솔라피 · 발신 대표님 번호)</span></div>
+        <textarea id="dSmsText" rows="5" placeholder="문자 내용 — 견적가 입력·계산 후 [↻ 견적문자]로 자동 채움. 자유롭게 수정해서 보낼 수 있어요."></textarea>
+        <div class="sms-send-row">
+          <button type="button" class="sms-refill" id="dSmsRefill" title="견적 문자 자동 작성">↻ 견적문자 채우기</button>
+          <button type="button" class="sms-send-btn" id="dSmsSend">📤 문자 발송</button>
+        </div>
+      </div>
     </div>
     <div class="modal-foot">
       <button class="d-calc" id="dLookupBtn" title="자동차365에서 차량정보 조회">🔍 자동차365</button>
-      <button class="d-calc" id="dCalcBtn" title="이 차량으로 견적 계산">🧮 계산</button>
-      <button class="d-calc" id="dSmsCopy" title="견적 문자 메시지 복사">📋 문자복사</button>
-      <button class="d-calc" id="dSmsOpen" title="문자앱 열기(모바일)">💬 문자앱</button>
+      <button class="d-calc" id="dCalcBtn" title="차종·연식·연료로 예상견적 계산">🧮 계산</button>
       <span class="d-saved" id="dSaved"></span>
       <button class="d-cancel" id="dCancel">닫기</button>
       <button class="d-save" id="dSave">저장</button>
@@ -464,7 +493,7 @@ function carLabel(l, icons){
   } else {                    // 레거시(번호 없는 옛 데이터): 차급/모델 표시
     main = cls || model || '-'; sub = (cls && model) ? model : '';
   }
-  const ic = icons ? ((icons.memo?' <span title="메모 있음">📝</span>':'') + (icons.overdue?' <span class="overdue" title="연락 예정일 지남">🔔</span>':'')) : '';
+  const ic = icons ? ((icons.memo?' <span title="메모 있음">📝</span>':'') + (icons.overdue?' <span class="overdue" title="연락 예정일 지남">🔔</span>':'') + (icons.sms?' <span title="자동문자 발송됨">✉️</span>':'')) : '';
   return `<div>${esc(main)}${ic}${sourceBadge(l)}</div>` + (sub ? `<div class="sub">${esc(sub)}</div>` : '');
 }
 // 유입경로 뱃지 (간편인증=본인인증된 정확 차량정보·전환의도 높음)
@@ -549,7 +578,7 @@ function render() {
     tr.dataset.id = l.id;
     tr.innerHTML = `
       <td>${fmtDate(l.created_at)}</td>
-      <td class="plate">${carLabel(l, {memo:!!l.memo, overdue})}</td>
+      <td class="plate">${carLabel(l, {memo:!!l.memo, overdue, sms:!!l.sms_sent})}</td>
       <td>${yearLabel(l.car_year)}</td>
       <td>${fuelCell(l)}</td>
       <td>${esc(l.region)}</td>
@@ -622,6 +651,7 @@ function detailInfoHtml(l){
     <div><span class="k">지역</span> ${esc(l.region||'-')}</div>
     <div><span class="k">연락처</span> <a href="tel:${(l.phone||'').replace(/\D/g,'')}">${esc(l.phone||'-')}</a></div>
     <div><span class="k">예상견적</span> ${estLabel(l)}</div>
+    <div><span class="k">자동문자</span> ${l.sms_sent ? '<span class="badge b-done">✅ 발송됨</span>' : '<span class="muted">미발송</span>'}</div>
     <div><span class="k">접수번호</span> ${esc(l.receipt_no||'-')}</div>`;
 }
 function openDetail(id){
@@ -637,6 +667,8 @@ function openDetail(id){
   $('dFollow').value = l.followup_at ? String(l.followup_at).slice(0,10) : '';
   $('dCond').value = l.car_condition || '';
   $('dMemo').value = l.memo || '';
+  $('dSmsText').value = buildQuoteMsg(l);          // 문자 발송칸 견적문자 자동 채움
+  $('dCalcResult').style.display = 'none'; window._calcMid = null;
   $('dSaved').textContent = '';
   $('detailModal').classList.add('show');
 }
@@ -660,27 +692,34 @@ function buildQuoteMsg(l){
   const plate = (l && l.plate || '').trim() || '고객님 차량';
   const fv = $('dFinal').value.trim();
   let priceLine;
-  if (fv) priceLine = `폐차 매입가는 ${Number(fv).toLocaleString('ko-KR')}만원으로 안내드립니다.`;
-  else if (l && l.est_low && l.est_high) priceLine = `폐차 예상 견적은 ${Math.round(l.est_low/10000)}~${Math.round(l.est_high/10000)}만원입니다.`;
-  else return null;
-  return `[퍼스트 폐차] 안녕하세요, 문의주신 차량(${plate}) 폐차 견적 안내드립니다.\n${priceLine}\n탁송비 무료 · 당일 견인 · 24시간 내 말소 완료해드려요.\n진행 원하시면 회신 주세요. ☎ 031-868-8700`;
+  if (fv) priceLine = `· 예상 매입가: ${Number(fv).toLocaleString('ko-KR')}만원`;
+  else if (l && l.est_low && l.est_high) priceLine = `· 예상 견적: ${Math.round(l.est_low/10000)}~${Math.round(l.est_high/10000)}만원`;
+  else priceLine = '· 정확한 매입가는 상담 시 안내드려요';
+  return `[퍼스트 폐차]\n문의주신 차량(${plate}) 폐차 견적 안내드립니다.\n${priceLine}\n· 탁송비 무료 · 당일 견인 · 24시간 내 말소 완료\n진행 원하시면 ☎ 031-868-8700 로 편하게 연락주세요.`;
 }
-// 📋 견적문자 복사
-$('dSmsCopy').addEventListener('click', () => {
-  const l = allLeads.find(x => String(x.id) === String(curDetailId));
-  const msg = buildQuoteMsg(l);
-  if (!msg){ alert('확정 매입가를 먼저 입력하거나 계산해주세요.'); return; }
-  const done = () => { $('dSaved').textContent = '📋 견적문자 복사됨 · 카톡/문자에 붙여넣기'; };
-  if (navigator.clipboard) navigator.clipboard.writeText(msg).then(done).catch(()=>{ prompt('아래 메시지를 복사하세요', msg); });
-  else prompt('아래 메시지를 복사하세요', msg);
+// ↻ 견적문자 자동 채우기 (확정가/예상견적 반영)
+$('dSmsRefill').addEventListener('click', () => {
+  const l = allLeads.find(x => String(x.id) === String(curDetailId)); if(!l) return;
+  $('dSmsText').value = buildQuoteMsg(l);
 });
-// 💬 문자앱 열기 (모바일: 번호+내용 자동 입력된 문자앱 실행)
-$('dSmsOpen').addEventListener('click', () => {
-  const l = allLeads.find(x => String(x.id) === String(curDetailId));
-  const msg = buildQuoteMsg(l);
-  if (!msg){ alert('확정 매입가를 먼저 입력하거나 계산해주세요.'); return; }
-  const phone = (l && l.phone || '').replace(/\D/g,'');
-  window.location.href = `sms:${phone}?body=${encodeURIComponent(msg)}`;
+// 📤 문자 발송 (솔라피)
+$('dSmsSend').addEventListener('click', async () => {
+  const l = allLeads.find(x => String(x.id) === String(curDetailId)); if(!l) return;
+  const phone = (l.phone||'').replace(/\D/g,'');
+  const text = $('dSmsText').value.trim();
+  if (phone.length < 10){ alert('연락처가 올바르지 않아요.'); return; }
+  if (!text){ alert('문자 내용을 입력해주세요.'); return; }
+  if (!confirm('아래 내용을 고객('+l.phone+')에게 문자로 발송할까요?\n\n'+text)) return;
+  const btn = $('dSmsSend'); btn.disabled = true; btn.textContent = '발송 중...';
+  try{
+    const { data: { session } } = await sb.auth.getSession();
+    const token = session ? session.access_token : '';
+    const r = await fetch('/api/send-quote', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ phone, text, token }) });
+    const j = await r.json();
+    if (j.sent){ $('dSaved').textContent = '📤 문자 발송 완료'; }
+    else { alert('발송 실패: ' + (j.error || '알 수 없는 오류')); }
+  }catch(e){ alert('발송 오류: ' + e.message); }
+  finally{ btn.disabled = false; btn.textContent = '📤 문자 발송'; }
 });
 // 🔍 자동차365 조회: 차량번호를 클립보드에 복사 + 조회 페이지 새 탭 열기 (담당자가 붙여넣기만)
 $('dLookupBtn').addEventListener('click', () => {
@@ -721,10 +760,32 @@ $('dSave').addEventListener('click', async () => {
   $('dSaved').textContent = '✓ 저장되었습니다';
   render();
 });
-// 🧮 이 차로 계산: 상세보기 값 → 계산기 탭으로 이동해 자동 계산
+// 🧮 이 차로 계산: 상세의 차종·연식·연료로 즉시 예상견적 → 확정매입가에 반영 가능
+function weightByNameAdmin(name){
+  if(!name) return null;
+  const n = String(name).replace(/\(.*?\)/g,'').replace(/\s/g,'');
+  const flat = {}; for(const b in CALC_CAR_DB) for(const m in CALC_CAR_DB[b]) flat[m]=CALC_CAR_DB[b][m];
+  const keys = Object.keys(flat).sort((a,b)=>b.length-a.length);
+  for(const k of keys){ if(n.includes(k.replace(/\s/g,''))) return flat[k]; }
+  return null;
+}
 $('dCalcBtn').addEventListener('click', () => {
   const l = allLeads.find(x => x.id === curDetailId); if (!l) return;
-  fillCalcFromLead(l);
+  const model = $('dCarModel').value.trim();
+  const year = parseInt($('dYear').value) || parseInt(l.car_year) || 0;
+  const fuel = $('dFuel').value;
+  const w = weightByNameAdmin(model) || parseInt(l.curb_weight) || 0;
+  if (w <= 0){ alert('차종(차명)을 입력하면 공차중량으로 계산돼요.\n먼저 🔍 자동차365로 조회 후 "차종"칸에 입력해주세요.'); return; }
+  const scrap = w * 350;
+  let cat = year>=2016?140000 : year>=2007?100000 : year>0?60000 : 100000;
+  if (fuel==='경유') cat=Math.round(cat*1.3); else if (fuel==='LPG') cat=Math.round(cat*0.7); else if (fuel==='전기·하이브리드') cat=Math.round(cat*0.8);
+  const low = Math.round((scrap*0.85+cat)/10000)*10000, high = Math.round((scrap*1.15+cat)/10000)*10000;
+  window._calcMid = Math.round((low+high)/2/10000);
+  $('dCalcRange').textContent = `예상 ${(low/10000).toLocaleString('ko-KR')}~${(high/10000).toLocaleString('ko-KR')}만원 · 공차 ${w}kg`;
+  $('dCalcResult').style.display = 'flex';
+});
+$('dApplyCalc').addEventListener('click', () => {
+  if (window._calcMid){ $('dFinal').value = window._calcMid; $('dSaved').textContent = '계산값을 확정매입가에 넣었어요 (저장 눌러 반영)'; }
 });
 // 행 클릭 → 상세보기 (상태 셀렉트·전화 링크는 제외)
 $('leadBody').addEventListener('click', e => {
