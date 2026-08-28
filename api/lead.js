@@ -27,21 +27,22 @@ module.exports = async (req, res) => {
         body: JSON.stringify(fields)
       });
       const arr = await r.json();
-      if (Array.isArray(arr) && arr.length) { res.status(200).json({ status: 'updated' }); return; }
+      if (Array.isArray(arr) && arr.length) { res.status(200).json({ status: 'updated', receipt_no: b.leadReceipt }); return; }
       // 못 찾으면 아래 신규 저장으로 진행
     }
 
     // 2) 신규 저장 (간편인증만 한 경우)
+    const newReceipt = 'PC-' + Date.now();
     const ins = Object.assign({
       plate: b.plate || null, region: b.region || null, phone: b.phone || null,
-      agree: true, receipt_no: 'PC-' + Date.now(), status: 'new'
+      agree: true, receipt_no: newReceipt, status: 'new'
     }, fields);
     await fetch(`${SUPA_URL}/rest/v1/${TABLE}`, {
       method: 'POST',
       headers: Object.assign({}, H, { 'Prefer': 'return=minimal' }),
       body: JSON.stringify(ins)
     });
-    res.status(200).json({ status: 'inserted' });
+    res.status(200).json({ status: 'inserted', receipt_no: newReceipt });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
