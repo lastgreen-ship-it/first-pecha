@@ -5,14 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="robots" content="noindex, nofollow" />
 <title>퍼스트 폐차 · 관리자</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2310b981'/%3E%3Ctext x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3EP%3C/text%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3EP%3C/text%3E%3C/svg%3E" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css" />
+<link rel="stylesheet" href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  :root{--blue:#10b981;--ink:#0f172a;--gray:#64748b;--line:#e6eaf0;--bg:#f4faf7}
+  :root{--blue:#2563eb;--blue-dark:#1d4ed8;--navy:#111c2e;--ink:#1e2939;--gray:#6b7280;--line:#e3e8ef;--bg:#f4f7fc}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Wanted Sans Variable','Wanted Sans','Pretendard Variable',Pretendard,-apple-system,sans-serif;color:var(--ink);background:var(--bg);letter-spacing:-.2px;word-break:keep-all;overflow-wrap:break-word}
+  body{font-family:'Spoqa Han Sans Neo','Wanted Sans Variable','Wanted Sans','Pretendard Variable',Pretendard,-apple-system,sans-serif;color:var(--ink);background:var(--bg);letter-spacing:-.2px;word-break:keep-all;overflow-wrap:break-word}
   /* 로그인 */
   #login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
   .login-card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 30px rgba(17,24,39,.08);padding:28px 24px;width:100%;max-width:360px}
@@ -52,7 +53,12 @@
   .b-contacted{background:#fef3c7;color:#92400e}
   .b-done{background:#dcfce7;color:#166534}
   .b-subsidy{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
-  .b-auth{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7}
+  .b-auth{background:#dbeafe;color:#1d4ed8;border:1px solid #93c5fd}
+  .b-manual{background:#fef3c7;color:#92400e;border:1px solid #fcd34d}
+  .b-ad{background:#ede9fe;color:#5b21b6;border:1px solid #c4b5fd}
+  .b-ref{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1}
+  .toolbar .filter.add-btn{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:700}
+  .toolbar .filter.add-btn:hover{filter:brightness(1.06)}
   td.plate .sub{font-weight:500;color:var(--gray);font-size:11px;margin-top:2px}
   .muted{color:#9ca3af;font-weight:400}
   .empty{text-align:center;color:var(--gray);padding:40px;font-size:14px}
@@ -73,7 +79,7 @@
   .calc-grid input,.calc-grid select{height:44px;border:1.5px solid var(--line);border-radius:8px;padding:0 12px;font-size:15px;font-family:inherit;background:#fff}
   .calc-grid input:focus,.calc-grid select:focus{outline:none;border-color:var(--blue)}
   #c_calc{margin-top:16px;width:100%;height:48px;border:none;border-radius:10px;background:var(--blue);color:#fff;font-weight:800;font-size:16px;cursor:pointer;font-family:inherit}
-  .calc-result{margin-top:18px;padding:18px;border-radius:12px;background:#ecfdf5;border:1px solid #a7f3d0}
+  .calc-result{margin-top:18px;padding:18px;border-radius:12px;background:#eff6ff;border:1px solid #bfdbfe}
   .calc-result .range{font-size:26px;font-weight:900;color:var(--blue);text-align:center;margin-bottom:14px}
   .calc-result .row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;color:#374151;border-top:1px dashed #bbf7d0}
   .calc-result .row:first-child{border-top:none}
@@ -113,8 +119,8 @@
   @media(max-width:520px){.d-fields{grid-template-columns:1fr}}
   /* 계산 결과 인라인 */
   .calc-inline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;
-    background:#ecfdf5;border:1px solid #a7f3d0;border-radius:10px;padding:10px 14px}
-  .ci-range{font-weight:800;color:#065f46;font-size:14px}
+    background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 14px}
+  .ci-range{font-weight:800;color:#1d4ed8;font-size:14px}
   .ci-apply{border:none;background:var(--blue);color:#fff;border-radius:8px;padding:8px 12px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;white-space:nowrap}
   .ci-apply:hover{background:var(--blue-dark)}
   /* 문자 발송 영역 */
@@ -126,41 +132,59 @@
   .sms-send-row{display:flex;gap:8px;margin-top:9px}
   .sms-refill{border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--gray)}
   .sms-refill:hover{border-color:var(--blue);color:var(--blue)}
-  .sms-send-btn{margin-left:auto;border:none;background:var(--blue);color:#fff;border-radius:8px;padding:9px 18px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 3px 10px rgba(16,185,129,.3)}
+  .sms-send-btn{margin-left:auto;border:none;background:var(--blue);color:#fff;border-radius:8px;padding:9px 18px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 3px 10px rgba(37,99,235,.3)}
   .sms-send-btn:hover{background:var(--blue-dark)}
   .sms-send-btn:disabled{background:#a9c4f5;cursor:default}
   /* 검색·정렬·기간통계·메모이력 */
   .search-box{border:1px solid var(--line);border-radius:8px;padding:7px 12px;font-size:13px;font-family:inherit;min-width:210px}
   .search-box:focus{outline:none;border-color:var(--blue)}
   .sort-sel{border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:13px;font-family:inherit;background:#fff;cursor:pointer}
-  .month-stat{background:#ecfdf5;border:1px solid #a7f3d0;border-radius:10px;padding:10px 14px;font-size:13px;color:#065f46;margin-bottom:16px}
+  .month-stat{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 14px;font-size:13px;color:#1d4ed8;margin-bottom:16px}
   .month-stat b{font-weight:800}
+  .inflow-wrap{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:16px}
+  .inflow-wrap>summary{cursor:pointer;padding:12px 16px;font-size:14px;font-weight:800;color:var(--ink);list-style:none}
+  .inflow-wrap>summary::-webkit-details-marker{display:none}
+  .inflow-wrap>summary::after{content:'＋';float:right;color:var(--gray)}
+  .inflow-wrap[open]>summary::after{content:'－'}
+  .inflow-wrap>summary .muted{font-weight:500;font-size:12px}
+  .inflow-body{padding:0 16px 14px}
+  .inflow-period{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .inflow-period .ip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit}
+  .inflow-period .ip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .inflow-table td,.inflow-table th{padding:9px 12px;font-size:13px}
+  .inflow-table td:not(:first-child),.inflow-table th:not(:first-child){text-align:right}
+  .inflow-table tbody tr{cursor:pointer}
+  .inflow-table tbody tr:hover{background:#f4f7fc}
+  .inflow-table tbody tr.sel{background:#eff6ff}
+  .inflow-table tr.total td{font-weight:800;background:#f9fafb;cursor:default}
+  .inflow-note{font-size:12px;color:var(--gray);margin-top:8px}
+  .inflow-chip{border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit}
   .memo-add{display:flex;gap:8px;margin-top:-4px}
   .memo-add input{flex:1;border:1.5px solid var(--line);border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit}
   .memo-add input:focus{outline:none;border-color:var(--blue)}
-  .memo-add button{border:1px solid var(--blue);background:#e7f7f0;color:var(--blue);border-radius:8px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .memo-add button{border:1px solid var(--blue);background:#eaf1fe;color:var(--blue);border-radius:8px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
   /* 계산기: 차급 빠른선택·정밀 옵션·지원금 힌트 */
   .cc-label{display:block;font-size:13px;font-weight:700;margin-bottom:8px}
   .cc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
   .cc-opt{border:1.5px solid var(--line);border-radius:10px;background:#fff;padding:10px 8px;font-family:inherit;font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;text-align:center;line-height:1.25}
   .cc-opt small{display:block;font-size:10.5px;color:var(--gray);font-weight:500;margin-top:2px}
   .cc-opt:hover{border-color:var(--blue)}
-  .cc-opt.sel{border-color:var(--blue);background:#e7f7f0;color:var(--blue)}
+  .cc-opt.sel{border-color:var(--blue);background:#eaf1fe;color:var(--blue)}
   .cc-opt.sel small{color:var(--blue)}
   .cc-precise{border:1px dashed #cbd5e1;border-radius:10px;margin-bottom:14px}
   .cc-precise>summary{padding:10px 12px;font-size:13px;font-weight:700;cursor:pointer;color:var(--gray);list-style:none}
   .cc-precise>summary::-webkit-details-marker{display:none}
   .cc-precise[open]>summary{color:var(--ink)}
   .cc-precise>div{padding:0 12px 12px}
-  .subsidy-hint{background:#ecfdf5;border:1px solid #a7f3d0;color:#047857;border-radius:8px;padding:9px 12px;font-size:12.5px;font-weight:600;margin:12px 0}
-  .d-calc{border:1px solid var(--blue);background:#e7f7f0;color:var(--blue);border-radius:8px;padding:8px 11px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .subsidy-hint{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;border-radius:8px;padding:9px 12px;font-size:12.5px;font-weight:600;margin:12px 0}
+  .d-calc{border:1px solid var(--blue);background:#eaf1fe;color:var(--blue);border-radius:8px;padding:8px 11px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
 
   /* ============ 디자인 정제(브랜드 톤 통일) ============ */
-  :root{--navy:#0b2e24;--blue-dark:#059669;--blue-soft:#e7f7f0}
+  :root{--navy:#111c2e;--blue-dark:#1d4ed8;--blue-soft:#eaf1fe}
   /* 브랜드 로고 마크 (고객 페이지와 통일) */
   .brand-mark{width:25px;height:25px;border-radius:7px;background:var(--blue);color:#fff;
     display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;
-    margin-right:9px;box-shadow:0 2px 7px rgba(16,185,129,.4)}
+    margin-right:9px;box-shadow:0 2px 7px rgba(37,99,235,.4)}
   .topbar .t{display:flex;align-items:center}
   .login-card .logo{display:flex;align-items:center;justify-content:center;gap:8px}
   .login-card .logo .brand-mark{margin-right:0;width:28px;height:28px;font-size:15px}
@@ -180,7 +204,7 @@
     outline:2px solid var(--blue);outline-offset:2px;border-radius:6px}
   /* 카드·표 그림자 정제 + 호버 */
   .stat{box-shadow:0 1px 3px rgba(17,24,39,.04);transition:box-shadow .18s,transform .18s}
-  .stat:hover{box-shadow:0 8px 20px rgba(11,46,36,.08);transform:translateY(-2px)}
+  .stat:hover{box-shadow:0 8px 20px rgba(17,28,46,.08);transform:translateY(-2px)}
   .stat b{letter-spacing:-.5px}
   .table-wrap,.calc-card{box-shadow:0 2px 12px rgba(17,24,39,.05)}
   th{letter-spacing:.2px}
@@ -220,12 +244,29 @@
   <div class="wrap" id="viewLeads">
     <div class="stats" id="stats"></div>
     <div class="month-stat" id="monthStat"></div>
+    <details class="inflow-wrap" id="inflowWrap">
+      <summary>📊 유입경로별 실적 <span class="muted">— 어느 채널에서 DB가 들어오고 매입까지 이어지는지</span></summary>
+      <div class="inflow-body">
+        <div class="inflow-period">
+          <button class="ip on" data-p="all">전체 기간</button>
+          <button class="ip" data-p="month">이번 달</button>
+          <button class="ip" data-p="7d">최근 7일</button>
+          <button class="ip" data-p="today">오늘</button>
+        </div>
+        <div class="table-wrap"><table class="inflow-table">
+          <thead><tr><th>유입경로</th><th>접수</th><th>진행중</th><th>완료</th><th>완료율</th><th>확정 매입</th></tr></thead>
+          <tbody id="inflowBody"></tbody>
+        </table></div>
+        <div class="inflow-note">행을 누르면 아래 목록이 그 유입경로만 보여요. · 광고비 ÷ 접수 = DB 1건당 비용</div>
+      </div>
+    </details>
     <div class="toolbar">
       <button class="filter on" data-f="all">전체</button>
       <button class="filter" data-f="new">신규</button>
       <button class="filter" data-f="inprogress">진행중</button>
       <button class="filter" data-f="done">완료</button>
       <button class="filter" data-f="auth">🔐 간편인증</button>
+      <button class="inflow-chip" id="inflowChip" title="유입경로 필터 해제" style="display:none"></button>
       <div class="spacer"></div>
       <input id="searchBox" class="search-box" type="search" placeholder="🔍 전화·차종·지역·메모 검색" />
       <select id="sortSel" class="sort-sel">
@@ -235,6 +276,7 @@
         <option value="est_low">예상견적↓</option>
         <option value="final_high">확정가↑</option>
       </select>
+      <button class="filter add-btn" id="addBtn" title="전화 등으로 직접 받은 문의를 등록">➕ 신규 추가</button>
       <button class="filter" id="csvBtn">📤 CSV</button>
       <button class="filter" id="refreshBtn">🔄 새로고침</button>
     </div>
@@ -372,6 +414,9 @@
         <label class="d-label">차량 상태 (선택)
           <input id="dCond" type="text" placeholder="사고/침수/미운행/키분실 등" />
         </label>
+        <label class="d-label">지역 (통화 후 기록)
+          <input id="dRegion" type="text" placeholder="예: 경기 양주시" />
+        </label>
       </div>
       <div class="calc-inline" id="dCalcResult" style="display:none">
         <span class="ci-range" id="dCalcRange">-</span>
@@ -404,6 +449,62 @@
   </div>
 </div>
 
+<!-- 신규 문의 직접 추가 모달 (전화 접수 등) -->
+<div class="modal-bg" id="addModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>➕ 신규 문의 추가</h3>
+      <button class="modal-x" id="aClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="d-info">전화 등으로 직접 받은 문의를 등록합니다. (차량번호·연락처 중 하나는 필수)</div>
+      <div class="d-fields">
+        <label class="d-label">차량번호
+          <input id="aPlate" type="text" placeholder="예: 12가3456" />
+        </label>
+        <label class="d-label">연락처
+          <input id="aPhone" type="tel" placeholder="010-0000-0000" />
+        </label>
+        <label class="d-label">지역
+          <select id="aRegion">
+            <option value="">미입력</option>
+            <option>서울</option><option>경기</option><option>인천</option><option>부산</option>
+            <option>대구</option><option>광주</option><option>대전</option><option>울산</option>
+            <option>세종</option><option>강원</option><option>충북</option><option>충남</option>
+            <option>전북</option><option>전남</option><option>경북</option><option>경남</option><option>제주</option>
+          </select>
+        </label>
+        <label class="d-label">차종
+          <input id="aCarModel" type="text" placeholder="예: 쏘나타, 포터" />
+        </label>
+        <label class="d-label">연식 (등록연도)
+          <input id="aYear" type="number" inputmode="numeric" placeholder="예: 2015" />
+        </label>
+        <label class="d-label">연료
+          <select id="aFuel">
+            <option value="">미입력</option>
+            <option>휘발유</option>
+            <option>경유</option>
+            <option>LPG</option>
+            <option>전기·하이브리드</option>
+          </select>
+        </label>
+        <label class="d-label">어디서 보셨어요? (유입경로)
+          <select id="aInflow"><option value="">미확인</option></select>
+        </label>
+      </div>
+      <label class="d-label">메모
+        <textarea id="aMemo" rows="4" placeholder="전화 상담 내용·요청사항 등"></textarea>
+      </label>
+    </div>
+    <div class="modal-foot">
+      <span class="d-saved" id="aSaved"></span>
+      <button class="d-cancel" id="aCancel">닫기</button>
+      <button class="d-save" id="aSave">등록</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ====== Supabase (폐차 전용 프로젝트) ====== */
 const SUPABASE_URL = 'https://iaowzoejbfizeuiwohku.supabase.co';
@@ -416,6 +517,8 @@ let curFilter = 'all';
 let searchQ = '';
 let sortBy = 'new';
 let curList = [];   // 현재 화면에 표시 중인(필터·검색·정렬 반영) 목록 — CSV 내보내기용
+let inflowFilter = '';     // 유입경로별 실적표에서 고른 유입경로(라벨)
+let inflowPeriod = 'all';  // 실적표 기간: all / month / 7d / today
 
 /* ── 로그인 ── */
 $('loginForm').addEventListener('submit', async (e) => {
@@ -436,6 +539,62 @@ $('refreshBtn').addEventListener('click', loadLeads);
 $('searchBox').addEventListener('input', (e) => { searchQ = e.target.value.trim(); render(); });
 $('sortSel').addEventListener('change', (e) => { sortBy = e.target.value; render(); });
 $('csvBtn').addEventListener('click', exportCSV);
+document.querySelectorAll('.inflow-period .ip').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.inflow-period .ip').forEach(x => x.classList.remove('on'));
+  b.classList.add('on'); inflowPeriod = b.dataset.p; render();
+}));
+$('inflowChip').addEventListener('click', () => { inflowFilter = ''; render(); });
+
+/* ── 신규 문의 직접 추가 (전화 접수 등 수기 등록) ── */
+const ADD_SOURCE = '관리자 수기';
+function openAdd(){
+  if ($('aInflow').options.length <= 1)
+    $('aInflow').insertAdjacentHTML('beforeend', PHONE_INFLOW.map(p => `<option value="${p.v}">${p.t}</option>`).join(''));
+  ['aPlate','aPhone','aCarModel','aYear','aMemo'].forEach(id => $(id).value = '');
+  $('aRegion').value = ''; $('aFuel').value = ''; $('aInflow').value = ''; $('aSaved').textContent = '';
+  $('addModal').classList.add('show');
+  setTimeout(() => $('aPlate').focus(), 50);
+}
+function closeAdd(){ $('addModal').classList.remove('show'); }
+$('addBtn').addEventListener('click', openAdd);
+$('aClose').addEventListener('click', closeAdd);
+$('aCancel').addEventListener('click', closeAdd);
+$('addModal').addEventListener('click', e => { if (e.target.id === 'addModal') closeAdd(); });
+$('aSave').addEventListener('click', async () => {
+  const plate = $('aPlate').value.trim();
+  const phone = $('aPhone').value.trim();
+  if (!plate && !phone) { alert('차량번호나 연락처 중 하나는 입력해주세요.'); return; }
+  const btn = $('aSave'); btn.disabled = true; btn.textContent = '등록 중...';
+  const cm = $('aCarModel').value.trim(), fuel = $('aFuel').value;
+  let carModel = null;
+  if (cm && fuel) carModel = cm + ' · ' + fuel;
+  else if (cm) carModel = cm;
+  else if (fuel) carModel = ' · ' + fuel;
+  const payload = {
+    receipt_no: 'PC-' + Date.now(),
+    plate: plate || null,
+    phone: phone || null,
+    region: $('aRegion').value || null,
+    car_model: carModel,
+    car_year: $('aYear').value.trim() || null,
+    memo: $('aMemo').value.trim() || null,
+    source: ADD_SOURCE,
+    status: 'new',
+    agree: true,
+    // 전화 접수 유입경로: utm_source=선택값, utm_medium='phone' (관리자 유입 집계용)
+    utm_source: $('aInflow').value || null,
+    utm_medium: $('aInflow').value ? 'phone' : null
+  };
+  const { error } = await sb.from('pecha_estimates').insert(payload);
+  btn.disabled = false; btn.textContent = '등록';
+  if (error) {
+    alert('등록 실패: ' + error.message + '\n\n(관리자 insert RLS 정책이 필요합니다 — Supabase에서 정책 추가 SQL을 먼저 실행하세요)');
+    return;
+  }
+  $('aSaved').textContent = '✓ 등록되었습니다';
+  await loadLeads();
+  setTimeout(closeAdd, 700);
+});
 
 document.querySelectorAll('.filter[data-f]').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -470,11 +629,10 @@ function fmtDate(iso) {
   return `${d.getFullYear()}.${p(d.getMonth()+1)}.${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
 }
 
-const YEAR_LABEL = {
-  '2016':'2016년 이후','2007':'2007~2015년','2006':'2006년 이전',
-  // 구버전 호환 (옛 5구간 데이터)
-  '2020':'2020년~','2015':'2015~19','2010':'2010~14','2005':'2005~09','2004':'~2004'
-};
+// 연식은 항상 "실제 등록연도"로 표시 (담당자 입력·간편인증 조회 모두 실제 연도).
+// ※ 옛 '차급 선택' 방식의 연식 구간값(2016/2007/2006/2020/2015/2010/2005/2004)과
+//    실제 연도가 숫자로 겹쳐 오표기되던 문제가 있어 구간 라벨 매핑을 제거함.
+const yearText = y => (/^\d{4}$/.test(String(y)) ? y + '년' : String(y));
 // car_model에 "예시 · 연료"가 함께 저장됨 → 차급/예시/연료로 분리
 function parseCar(l){
   const cls = (l.car_brand||'').trim();
@@ -498,13 +656,69 @@ function carLabel(l, icons){
 }
 // 유입경로 뱃지 (간편인증=본인인증된 정확 차량정보·전환의도 높음)
 function sourceBadge(l){
-  return l.source === '간편인증 정확견적'
-    ? ' <span class="badge b-auth" title="본인 간편인증으로 확인된 차량 (정확 차량정보·전환의도 높음)">🔐 간편인증</span>' : '';
+  if (l.source === '간편인증 정확견적')
+    return ' <span class="badge b-auth" title="본인 간편인증으로 확인된 차량 (정확 차량정보·전환의도 높음)">🔐 간편인증</span>';
+  if (l.source === '관리자 수기')
+    return ' <span class="badge b-manual" title="담당자가 직접 등록한 문의 (전화 접수 등)">✍️ 수기</span>';
+  return '';
+}
+/* 유입경로 판단 순서
+   ① 전화 접수(관리자 수기) — 담당자가 고른 "어디서 보셨어요?" (utm_medium=phone)
+   ② utm 꼬리표 — 광고/채널 링크 (clickid=꼬리표 없이 광고 클릭ID로 추정, profile=프로필 링크)
+   ③ referrer(이전 페이지) — 자연 유입
+   ④ 아무 정보 없음 — 직접 유입 */
+const PAID_CH = { meta:'📱 메타', facebook:'📱 메타', instagram:'📱 인스타', tiktok:'🎵 틱톡',
+                  naver:'🔍 네이버', google:'🔍 구글', youtube:'▶️ 유튜브' };
+const ETC_CH  = { naver_place:'📍 네이버플레이스', kakao:'💬 카카오', sms:'✉️ 문자',
+                  qr_card:'🪪 QR', blog:'📝 블로그' };
+// 전화 접수 시 "어디서 보셨어요?" 선택지 (신규 추가 창과 공용)
+const PHONE_INFLOW = [
+  { v:'meta',      t:'📱 메타(페북·인스타) 광고' },
+  { v:'tiktok',    t:'🎵 틱톡' },
+  { v:'naver',     t:'🔍 네이버 검색' },
+  { v:'homepage',  t:'🌐 홈페이지' },
+  { v:'referral',  t:'🤝 지인 소개' },
+  { v:'repeat',    t:'🔁 기존 고객' },
+  { v:'signboard', t:'🪧 간판·현장' },
+  { v:'etc',       t:'❔ 기타' }
+];
+function inflowInfo(l){
+  const s = (l.utm_source || '').toLowerCase();
+  const m = (l.utm_medium || '').toLowerCase();
+  const ref = (l.referrer || '').toLowerCase();
+  // ① 전화 접수
+  if (m === 'phone'){
+    const p = PHONE_INFLOW.find(x => x.v === s);
+    return { label: '📞 ' + (p ? p.t.replace(/^\S+\s/, '') : (l.utm_source || '기타')), ad: s === 'meta' || s === 'tiktok' };
+  }
+  // ② 꼬리표/클릭ID
+  if (s){
+    if (PAID_CH[s]){
+      if (m === 'profile' || m === 'organic' || m === 'bio') return { label: PAID_CH[s] + ' 프로필', ad:false };
+      if (m === 'clickid') return { label: PAID_CH[s] + (s === 'meta' ? ' 광고(추정)' : ' 광고'), ad:true };
+      return { label: PAID_CH[s] + ' 광고', ad:true };
+    }
+    return { label: ETC_CH[s] || ('🔗 ' + l.utm_source), ad:false };
+  }
+  // ③ utm 없이 이전 페이지만 있으면 = 자연 유입 (광고 아님)
+  if (ref.includes('facebook') || ref.includes('instagram')) return { label:'📱 메타 자연유입', ad:false };
+  if (ref.includes('tiktok')) return { label:'🎵 틱톡 자연유입', ad:false };
+  if (ref.includes('youtube') || ref.includes('youtu.be')) return { label:'▶️ 유튜브', ad:false };
+  if (ref.includes('naver')) return { label:'🔍 네이버 검색', ad:false };
+  if (ref.includes('google')) return { label:'🔍 구글 검색', ad:false };
+  if (ref.includes('daum') || ref.includes('kakao')) return { label:'💬 다음/카카오', ad:false };
+  if (ref) return { label:'🔗 외부링크', ad:false };
+  return { label:'직접 유입', ad:false };
+}
+function inflowBadge(l){
+  const i = inflowInfo(l);
+  const camp = [l.utm_campaign, l.utm_content].filter(Boolean).join('/');
+  const t = camp ? `${i.label} · ${camp}` : i.label;
+  return ` <span class="badge ${i.ad ? 'b-ad' : 'b-ref'}" title="${esc(t)}">${esc(i.label)}</span>`;
 }
 function yearLabel(y){
   if(!y) return '<span class="muted">미입력</span>';
-  if(YEAR_LABEL[y]) return esc(YEAR_LABEL[y]);
-  return esc(/^\d{4}$/.test(String(y)) ? y+'년' : y);   // 담당자가 기록한 실제 연도
+  return esc(yearText(y));   // 담당자가 기록한 실제 연도
 }
 function fuelCell(l){
   const { fuel } = parseCar(l);
@@ -523,6 +737,40 @@ const STATUSES = [
 ];
 function statusOptions(cur){
   return STATUSES.map(s=>`<option value="${s.v}"${cur===s.v?' selected':''}>${s.t}</option>`).join('');
+}
+
+/* 유입경로별 실적표 (기간 선택 · 행 클릭 = 목록 필터) */
+function inPeriod(l){
+  if (inflowPeriod === 'all') return true;
+  const d = new Date(l.created_at), now = new Date();
+  if (inflowPeriod === 'today') return d.toDateString() === now.toDateString();
+  if (inflowPeriod === 'month') return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+  if (inflowPeriod === '7d') return (now - d) <= 7 * 864e5;
+  return true;
+}
+function renderInflowStat(){
+  const g = {};
+  allLeads.filter(inPeriod).forEach(l => {
+    const k = inflowInfo(l).label;
+    const r = g[k] || (g[k] = { n:0, prog:0, done:0, sum:0 });
+    r.n++;
+    if (l.status === 'done') r.done++;
+    else if (l.status !== 'new') r.prog++;
+    if (l.final_price) r.sum += l.final_price;
+  });
+  const rows = Object.entries(g).sort((a,b) => b[1].n - a[1].n);
+  const man = v => Math.round(v/10000).toLocaleString('ko-KR') + '만원';
+  const pct = r => r.n ? Math.round(r.done / r.n * 100) + '%' : '-';
+  const tot = rows.reduce((t,[,r]) => ({ n:t.n+r.n, prog:t.prog+r.prog, done:t.done+r.done, sum:t.sum+r.sum }), { n:0, prog:0, done:0, sum:0 });
+  $('inflowBody').innerHTML = rows.length
+    ? rows.map(([k,r]) => `<tr data-k="${esc(k)}" class="${k === inflowFilter ? 'sel' : ''}">
+        <td>${esc(k)}</td><td><b>${r.n}</b></td><td>${r.prog}</td><td>${r.done}</td><td>${pct(r)}</td><td>${man(r.sum)}</td></tr>`).join('')
+      + `<tr class="total"><td>합계</td><td>${tot.n}</td><td>${tot.prog}</td><td>${tot.done}</td><td>${pct(tot)}</td><td>${man(tot.sum)}</td></tr>`
+    : '<tr><td colspan="6" class="muted">이 기간에 접수된 문의가 없어요</td></tr>';
+  $('inflowBody').querySelectorAll('tr[data-k]').forEach(tr => tr.addEventListener('click', () => {
+    inflowFilter = (inflowFilter === tr.dataset.k) ? '' : tr.dataset.k;
+    render();
+  }));
 }
 
 function render() {
@@ -546,6 +794,7 @@ function render() {
     if (String(l.created_at).slice(0,7) === ym){ mCount++; if(l.status==='done') mDone++; if(l.final_price) mSum += l.final_price; }
   });
   $('monthStat').innerHTML = `📅 이번 달 · 접수 <b>${mCount}</b>건 · 완료 <b>${mDone}</b>건 · 확정 매입 <b>${Math.round(mSum/10000).toLocaleString('ko-KR')}</b>만원`;
+  renderInflowStat();
 
   // 상태 필터
   let list;
@@ -553,10 +802,15 @@ function render() {
   else if (curFilter === 'inprogress') list = allLeads.filter(l => ['contacted','visit','received'].includes(l.status));
   else if (curFilter === 'auth') list = allLeads.filter(l => l.source === '간편인증 정확견적');
   else list = allLeads.filter(l => l.status === curFilter);
+  // 유입경로 필터 (실적표에서 선택)
+  if (inflowFilter) list = list.filter(l => inflowInfo(l).label === inflowFilter);
+  $('inflowChip').style.display = inflowFilter ? '' : 'none';
+  $('inflowChip').textContent = inflowFilter ? `유입: ${inflowFilter} ✕` : '';
   // 검색 (전화·차종·지역·메모)
   if (searchQ) {
     const q = searchQ.toLowerCase();
-    list = list.filter(l => [l.car_brand,l.car_model,l.region,l.phone,l.memo,l.plate].filter(Boolean).join(' ').toLowerCase().includes(q));
+    list = list.filter(l => [l.car_brand,l.car_model,l.region,l.phone,l.memo,l.plate,
+      l.utm_source,l.utm_campaign,l.utm_content].filter(Boolean).join(' ').toLowerCase().includes(q));
   }
   // 정렬
   list.sort((a,b) => {
@@ -577,7 +831,7 @@ function render() {
     const tr = document.createElement('tr');
     tr.dataset.id = l.id;
     tr.innerHTML = `
-      <td>${fmtDate(l.created_at)}</td>
+      <td>${fmtDate(l.created_at)}${inflowBadge(l)}</td>
       <td class="plate">${carLabel(l, {memo:!!l.memo, overdue, sms:!!l.sms_sent})}</td>
       <td>${yearLabel(l.car_year)}</td>
       <td>${fuelCell(l)}</td>
@@ -609,8 +863,9 @@ function csvCell(v){ v = (v==null?'':String(v)); return /[",\n\r]/.test(v) ? '"'
 function exportCSV(){
   const rows = (curList.length ? curList : allLeads);
   if (!rows.length){ alert('내보낼 문의가 없습니다.'); return; }
-  const head = ['접수일시','유입경로','차량번호','차급','차종','연료','연식','지역','연락처','예상견적(만원)','확정매입가(만원)','진행단계','다음연락일','차량상태','메모','접수번호'];
-  const YLBL = y => y ? (YEAR_LABEL[y] || y) : '';
+  const head = ['접수일시','유입경로','차량번호','차급','차종','연료','연식','지역','연락처','예상견적(만원)','확정매입가(만원)','진행단계','다음연락일','차량상태','메모','접수번호',
+                '유입채널','utm_source','utm_medium','utm_campaign','utm_content','referrer'];
+  const YLBL = y => y ? yearText(y) : '';
   const body = rows.map(l => {
     const { cls, model, fuel } = parseCar(l);
     const st = (STATUSES.find(s => s.v === l.status) || {}).t || l.status || '';
@@ -621,7 +876,9 @@ function exportCSV(){
       fmtDate(l.created_at), src, l.plate||'', cls, model, fuel, YLBL(l.car_year),
       l.region||'', l.phone||'', est, fin, st,
       l.followup_at ? String(l.followup_at).slice(0,10) : '', l.car_condition||'',
-      (l.memo||'').replace(/\r?\n/g,' / '), l.receipt_no||''
+      (l.memo||'').replace(/\r?\n/g,' / '), l.receipt_no||'',
+      inflowInfo(l).label, l.utm_source||'', l.utm_medium||'',
+      l.utm_campaign||'', l.utm_content||'', l.referrer||''
     ];
   });
   const csv = [head, ...body].map(r => r.map(csvCell).join(',')).join('\r\n');
@@ -652,6 +909,10 @@ function detailInfoHtml(l){
     <div><span class="k">연락처</span> <a href="tel:${(l.phone||'').replace(/\D/g,'')}">${esc(l.phone||'-')}</a></div>
     <div><span class="k">예상견적</span> ${estLabel(l)}</div>
     <div><span class="k">자동문자</span> ${l.sms_sent ? '<span class="badge b-done">✅ 발송됨</span>' : '<span class="muted">미발송</span>'}</div>
+    <div><span class="k">유입경로</span> ${esc(inflowInfo(l).label)}${
+      [l.utm_campaign, l.utm_content].filter(Boolean).length
+        ? ' <span class="muted">· ' + esc([l.utm_campaign, l.utm_content].filter(Boolean).join(' / ')) + '</span>' : ''
+    }</div>
     <div><span class="k">접수번호</span> ${esc(l.receipt_no||'-')}</div>`;
 }
 function openDetail(id){
@@ -666,6 +927,7 @@ function openDetail(id){
   $('dFinal').value = l.final_price ? Math.round(l.final_price/10000) : '';
   $('dFollow').value = l.followup_at ? String(l.followup_at).slice(0,10) : '';
   $('dCond').value = l.car_condition || '';
+  $('dRegion').value = l.region || '';
   $('dMemo').value = l.memo || '';
   $('dSmsText').value = buildQuoteMsg(l);          // 문자 발송칸 견적문자 자동 채움
   $('dCalcResult').style.display = 'none'; window._calcMid = null;
@@ -695,8 +957,11 @@ function buildQuoteMsg(l){
   if (fv) priceLine = `· 예상 매입가: ${Number(fv).toLocaleString('ko-KR')}만원`;
   else if (l && l.est_low && l.est_high) priceLine = `· 예상 견적: ${Math.round(l.est_low/10000)}~${Math.round(l.est_high/10000)}만원`;
   else priceLine = '· 정확한 매입가는 상담 시 안내드려요';
-  return `[퍼스트 폐차]\n문의주신 차량(${plate}) 폐차 견적 안내드립니다.\n${priceLine}\n· 탁송비 무료 · 당일 견인 · 24시간 내 말소 완료\n진행 원하시면 ☎ 031-868-8700 로 편하게 연락주세요.`;
+  return `[퍼스트 폐차]\n문의주신 차량(${plate}) 폐차 견적 안내드립니다.\n${priceLine}\n· 탁송비 무료 · 당일 견인 · 24시간 내 말소 완료\n진행 원하시면 ☎ 031-868-8700 로 편하게 연락주세요.\n▶ ${QUOTE_SMS_URL}`;
 }
+// 견적문자 속 홈페이지 짧은 링크 — vercel.json에서 /q → /?utm_source=sms&utm_medium=quote 로 이동
+// (관리자에서 '✉️ 문자' 유입으로 집계)
+const QUOTE_SMS_URL = 'www.upcyclecar.co.kr/q';
 // ↻ 견적문자 자동 채우기 (확정가/예상견적 반영)
 $('dSmsRefill').addEventListener('click', () => {
   const l = allLeads.find(x => String(x.id) === String(curDetailId)); if(!l) return;
@@ -751,6 +1016,7 @@ $('dSave').addEventListener('click', async () => {
     final_price: fv ? Math.round(parseFloat(fv)*10000) : null,
     followup_at: $('dFollow').value || null,
     car_condition: $('dCond').value.trim() || null,
+    region: $('dRegion').value.trim() || null,
     memo: $('dMemo').value.trim() || null
   };
   const { error } = await sb.from('pecha_estimates').update(payload).eq('id', curDetailId);

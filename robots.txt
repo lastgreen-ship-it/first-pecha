@@ -2,10 +2,13 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 Disallow: /admin
+Disallow: /api/
+# 옛 게시판 스팸글 삭제(410) 응답은 검색엔진이 읽어야 색인에서 지워짐
+Allow: /api/gone
 Disallow: /supabase_pecha.sql
 Disallow: /DEPLOY_GUIDE.md
 Disallow: /SETUP_TODO.md
 Disallow: /README.md
 Disallow: /.gitignore
 
-Sitemap: https://firstpecha.vercel.app/sitemap.xml
+Sitemap: https://www.upcyclecar.co.kr/sitemap.xml

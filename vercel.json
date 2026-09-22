@@ -1,0 +1,407 @@
+{
+    "cleanUrls":  true,
+    "redirects":  [
+                      {
+                          "source":  "/",
+                          "has":  [
+                                      {
+                                          "key":  "kboard_content_redirect",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/qna",
+                          "has":  [
+                                      {
+                                          "key":  "uid",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/qna",
+                          "has":  [
+                                      {
+                                          "key":  "mod",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/qna/",
+                          "has":  [
+                                      {
+                                          "key":  "uid",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/qna/",
+                          "has":  [
+                                      {
+                                          "key":  "mod",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/notice",
+                          "has":  [
+                                      {
+                                          "key":  "uid",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/notice",
+                          "has":  [
+                                      {
+                                          "key":  "mod",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/notice/",
+                          "has":  [
+                                      {
+                                          "key":  "uid",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/notice/",
+                          "has":  [
+                                      {
+                                          "key":  "mod",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/inquiry",
+                          "has":  [
+                                      {
+                                          "key":  "uid",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/inquiry",
+                          "has":  [
+                                      {
+                                          "key":  "mod",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/inquiry/",
+                          "has":  [
+                                      {
+                                          "key":  "uid",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/inquiry/",
+                          "has":  [
+                                      {
+                                          "key":  "mod",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/quickcounsel",
+                          "has":  [
+                                      {
+                                          "key":  "uid",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/quickcounsel",
+                          "has":  [
+                                      {
+                                          "key":  "mod",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/quickcounsel/",
+                          "has":  [
+                                      {
+                                          "key":  "uid",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/quickcounsel/",
+                          "has":  [
+                                      {
+                                          "key":  "mod",
+                                          "type":  "query"
+                                      }
+                                  ],
+                          "destination":  "/api/gone",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/accept",
+                          "destination":  "/#quote",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/accept/",
+                          "destination":  "/#quote",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/accept-ok",
+                          "destination":  "/#quote",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/accept-ok/",
+                          "destination":  "/#quote",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/inquiry",
+                          "destination":  "/#quote",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/inquiry/",
+                          "destination":  "/#quote",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/quickcounsel",
+                          "destination":  "/#quote",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/quickcounsel/",
+                          "destination":  "/#quote",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/qna",
+                          "destination":  "/#quote",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/qna/",
+                          "destination":  "/#quote",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/process",
+                          "destination":  "/#process",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/process/",
+                          "destination":  "/#process",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/faq",
+                          "destination":  "/#faq",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/faq/",
+                          "destination":  "/#faq",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/documents",
+                          "destination":  "/#faq",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/documents/",
+                          "destination":  "/#faq",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/compensation",
+                          "destination":  "/#quickcalc",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/compensation/",
+                          "destination":  "/#quickcalc",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/introduction",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/introduction/",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/notice",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/notice/",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/privacy-policy",
+                          "destination":  "/privacy",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/privacy-policy/",
+                          "destination":  "/privacy",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/오시는길",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/오시는길/",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/%EC%98%A4%EC%8B%9C%EB%8A%94%EA%B8%B8",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/%EC%98%A4%EC%8B%9C%EB%8A%94%EA%B8%B8/",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/category/(.*)",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/20(\\d{2})/(.*)",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/wp-admin/(.*)",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/wp-content/(.*)",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/wp-includes/(.*)",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/wp-login.php",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/xmlrpc.php",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/feed",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/feed/",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/sitemap_index.xml",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/wp-sitemap.xml",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/page-sitemap.xml",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/post-sitemap.xml",
+                          "destination":  "/",
+                          "permanent":  true
+                      },
+                      {
+                          "source":  "/q",
+                          "destination":  "/?utm_source=sms\u0026utm_medium=quote",
+                          "permanent":  false
+                      },
+                      {
+                          "source":  "/s",
+                          "destination":  "/?utm_source=sms",
+                          "permanent":  false
+                      }
+                  ]
+}
