@@ -5,6 +5,9 @@ const crypto = require('crypto');
 const SUPA_URL = 'https://iaowzoejbfizeuiwohku.supabase.co';
 const TABLE = 'pecha_estimates';
 const SHOP_TEL = '031-868-8700';
+// 문자로 나가는 홈페이지 짧은 링크 — vercel.json에서 /s → /?utm_source=sms 로 이동
+// (관리자에서 '문자' 유입으로 집계)
+const SITE_URL = 'www.upcyclecar.co.kr/s';
 
 // 고객에게 보낼 문자 (차량번호 개인화) — 수정 가능
 function buildMsg(plate) {
@@ -13,7 +16,8 @@ function buildMsg(plate) {
 ${car} 견적 요청 감사합니다.
 정확한 폐차 매입가는 전화 상담이 가장 빠르고 정확해요.
 지금 ☎ ${SHOP_TEL} 로 전화주세요!
-정부 관허 폐차장 · 탁송비 무료 · 판매 강요 없음`;
+정부 관허 폐차장 · 탁송비 무료 · 판매 강요 없음
+▶ ${SITE_URL}`;
 }
 
 async function sendSMS(to, text) {

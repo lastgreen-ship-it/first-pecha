@@ -31,11 +31,17 @@ module.exports = async (req, res) => {
       // 못 찾으면 아래 신규 저장으로 진행
     }
 
-    // 2) 신규 저장 (간편인증만 한 경우)
+    // 2) 신규 저장 (간편인증만 한 경우) — 유입경로도 함께 기록
+    //    ※ 1)의 갱신 경로에서는 무료견적 접수 때 저장된 최초 유입경로를 유지한다(덮어쓰지 않음).
     const newReceipt = 'PC-' + Date.now();
     const ins = Object.assign({
       plate: b.plate || null, region: b.region || null, phone: b.phone || null,
-      agree: true, receipt_no: newReceipt, status: 'new'
+      agree: true, receipt_no: newReceipt, status: 'new',
+      utm_source: b.utm_source || null,
+      utm_medium: b.utm_medium || null,
+      utm_campaign: b.utm_campaign || null,
+      utm_content: b.utm_content || null,
+      referrer: b.referrer || null
     }, fields);
     await fetch(`${SUPA_URL}/rest/v1/${TABLE}`, {
       method: 'POST',
