@@ -92,6 +92,24 @@
   /* 목록 행 상호작용 */
   tbody tr{cursor:pointer}
   tbody tr:hover{background:#f8fafc}
+  /* 진행단계별 줄 색 — 은은한 배경 + 왼쪽 색 띠 (완료는 흐리게) */
+  #leadBody tr > td:first-child{box-shadow:inset 4px 0 0 var(--st-bar, transparent)}
+  #leadBody tr > td{background:var(--st-bg, transparent);transition:background .15s}
+  #leadBody tr:hover > td{filter:brightness(.97)}
+  #leadBody tr.st-new{--st-bg:#eef4ff;--st-bar:#2563eb}
+  #leadBody tr.st-contacted{--st-bg:#fff7e6;--st-bar:#f59e0b}
+  #leadBody tr.st-visit{--st-bg:#f3efff;--st-bar:#7c3aed}
+  #leadBody tr.st-received{--st-bg:#ecfdf3;--st-bar:#16a34a}
+  #leadBody tr.st-done{--st-bg:#f6f7f9;--st-bar:#cbd5e1}
+  #leadBody tr.st-done > td{color:#8a94a3}
+  #leadBody tr.st-done .plate a,#leadBody tr.st-done .phone a{opacity:.75}
+  .status-sel.st-new{background:#eef4ff;border-color:#bfd3ff;color:#1d4ed8;font-weight:700}
+  .status-sel.st-contacted{background:#fff7e6;border-color:#fcd9a0;color:#92400e;font-weight:700}
+  .status-sel.st-visit{background:#f3efff;border-color:#d6c8ff;color:#5b21b6;font-weight:700}
+  .status-sel.st-received{background:#ecfdf3;border-color:#b7e9c9;color:#166534;font-weight:700}
+  .status-sel.st-done{background:#f1f3f6;border-color:#dfe3e8;color:#6b7280}
+  .st-legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--gray);margin:0 0 8px 2px}
+  .st-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
   .row-final{display:block;color:#166534;font-size:11px;font-weight:700;margin-top:2px}
   .overdue{color:#dc2626}
   /* 상세보기 모달 */
@@ -279,6 +297,13 @@
       <button class="filter add-btn" id="addBtn" title="전화 등으로 직접 받은 문의를 등록">➕ 신규 추가</button>
       <button class="filter" id="csvBtn">📤 CSV</button>
       <button class="filter" id="refreshBtn">🔄 새로고침</button>
+    </div>
+    <div class="st-legend" aria-label="진행단계 색 안내">
+      <span><i style="background:#2563eb"></i>신규</span>
+      <span><i style="background:#f59e0b"></i>상담중</span>
+      <span><i style="background:#7c3aed"></i>방문예약</span>
+      <span><i style="background:#16a34a"></i>인수완료</span>
+      <span><i style="background:#cbd5e1"></i>완료</span>
     </div>
     <div class="table-wrap">
       <table id="leadTable">
@@ -830,6 +855,7 @@ function render() {
     const overdue = l.followup_at && String(l.followup_at).slice(0,10) <= today && l.status !== 'done';
     const tr = document.createElement('tr');
     tr.dataset.id = l.id;
+    tr.className = 'st-' + (l.status || 'new');   // 진행단계별 줄 색
     tr.innerHTML = `
       <td>${fmtDate(l.created_at)}${inflowBadge(l)}</td>
       <td class="plate">${carLabel(l, {memo:!!l.memo, overdue, sms:!!l.sms_sent})}</td>
@@ -839,7 +865,7 @@ function render() {
       <td class="phone"><a href="tel:${(l.phone||'').replace(/\D/g,'')}">${esc(l.phone)}</a></td>
       <td><b style="color:var(--blue)">${estLabel(l)}</b>${l.final_price?`<span class="row-final">확정 ${Math.round(l.final_price/10000).toLocaleString('ko-KR')}만원</span>`:''}</td>
       <td>
-        <select class="status-sel" data-id="${l.id}">${statusOptions(l.status)}</select>
+        <select class="status-sel st-${esc(l.status || 'new')}" data-id="${l.id}">${statusOptions(l.status)}</select>
       </td>`;
     body.appendChild(tr);
   });
