@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>퍼스트 폐차 · 입찰 관리</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3EP%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{--blue:#2563eb;--navy:#111c2e;--ink:#1e2939;--gray:#6b7280;--line:#e3e8ef;--bg:#f4f7fc}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Pretendard,-apple-system,'Malgun Gothic',sans-serif;font-size:14.5px;line-height:1.6}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+  .topbar .in{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:10px}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--navy)}
+  .brand i{width:26px;height:26px;border-radius:8px;background:var(--blue);color:#fff;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:15px}
+  .topbar a,.topbar button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 12px;font-size:13px;cursor:pointer;font-family:inherit;text-decoration:none;color:var(--ink)}
+  .wrap{max-width:1100px;margin:0 auto;padding:20px 16px 60px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
+  h1{font-size:19px;margin:0 0 6px;color:var(--navy)} h2{font-size:16px;margin:0 0 12px;color:var(--navy)}
+  p.sub{color:var(--gray);font-size:13px;margin:0 0 14px}
+  label{display:block;font-size:13px;color:var(--gray);margin:10px 0 5px;font-weight:600}
+  input,select{width:100%;border:1.5px solid var(--line);border-radius:9px;padding:10px 12px;font-size:15px;font-family:inherit;background:#fff}
+  .btn{width:100%;margin-top:14px;border:0;background:var(--navy);color:#fff;border-radius:10px;padding:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+  .btn-sm{border:0;background:var(--blue);color:#fff;border-radius:8px;padding:7px 12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+  .btn-sm.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  .btn-sm.warn{background:#b91c1c}
+  .tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+  .tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px;font-size:13.5px;cursor:pointer;font-family:inherit}
+  .tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{font-size:12.5px;color:var(--gray);font-weight:600;white-space:nowrap}
+  .tw{overflow-x:auto}
+  .badge{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700;white-space:nowrap}
+  .b-pending{background:#fff7e6;color:#92400e}
+  .b-approved{background:#ecfdf3;color:#166534}
+  .b-susp{background:#fef2f2;color:#b91c1c}
+  .b-open{background:#eff6ff;color:#1d4ed8}
+  .b-award{background:#f3efff;color:#5b21b6}
+  .muted{color:var(--gray)}
+  .empty{text-align:center;color:var(--gray);padding:30px;font-size:14px}
+  .msg{border-radius:10px;padding:12px 14px;font-size:14px;margin-top:10px}
+  .msg.err{background:#fef2f2;color:#b91c1c}
+  .msg.ok{background:#ecfdf3;color:#166534}
+  .login{max-width:360px;margin:60px auto}
+  .row2{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="in">
+  <span class="brand"><i>P</i>퍼스트 폐차 · 입찰 관리</span>
+  <span style="flex:1"></span>
+  <a href="/admin">← 문의 관리</a>
+  <span id="who" class="muted" style="font-size:13px"></span>
+  <button id="logoutBtn" style="display:none">로그아웃</button>
+</div></div>
+
+<div class="wrap">
+  <div id="login" class="login card">
+    <h1>운영자 로그인</h1>
+    <p class="sub">문의 관리와 같은 계정으로 로그인하세요.</p>
+    <form id="loginForm">
+      <label>이메일<input id="email" type="email" required autocomplete="username" /></label>
+      <label>비밀번호<input id="password" type="password" required autocomplete="current-password" /></label>
+      <button class="btn" id="loginBtn">로그인</button>
+    </form>
+    <div id="loginErr"></div>
+  </div>
+
+  <div id="app" style="display:none">
+    <div class="tabs">
+      <button class="tab on" data-t="auction">🔨 경매·입찰</button>
+      <button class="tab" data-t="partners">🏭 폐차장 관리</button>
+    </div>
+    <div id="viewAuction"></div>
+    <div id="viewPartners" style="display:none"></div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://iaowzoejbfizeuiwohku.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_-GbHQLU1fTsKP17qJkVSAw_QOIRySP6';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = id => document.getElementById(id);
+const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const man = n => (n==null?'-':Math.round(Number(n)/10000).toLocaleString('ko-KR')+'만원');
+const dt = s => s ? new Date(s).toLocaleString('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) : '-';
+const DEFAULT_HOURS = 24;   // 기본 입찰 마감 시간
+
+/* 로그인 */
+$('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const b = $('loginBtn'); b.disabled = true; b.textContent = '로그인 중...';
+  const { error } = await sb.auth.signInWithPassword({ email: $('email').value.trim(), password: $('password').value });
+  b.disabled = false; b.textContent = '로그인';
+  if (error) { $('loginErr').innerHTML = '<div class="msg err">로그인 실패</div>'; return; }
+  boot();
+});
+$('logoutBtn').addEventListener('click', async () => { await sb.auth.signOut(); location.reload(); });
+
+document.querySelectorAll('.tab[data-t]').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.tab[data-t]').forEach(x => x.classList.remove('on'));
+  b.classList.add('on');
+  const t = b.dataset.t;
+  $('viewAuction').style.display = t==='auction' ? '' : 'none';
+  $('viewPartners').style.display = t==='partners' ? '' : 'none';
+  t === 'auction' ? loadAuctions() : loadPartners();
+}));
+
+async function boot(){
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) { $('login').style.display=''; $('app').style.display='none'; return; }
+  $('who').textContent = user.email; $('logoutBtn').style.display='';
+  $('login').style.display='none'; $('app').style.display='';
+  loadAuctions();
+}
+
+/* ========== 경매 · 입찰 ========== */
+async function loadAuctions(){
+  $('viewAuction').innerHTML = '<div class="empty">불러오는 중...</div>';
+  const { data: leads, error } = await sb.from('pecha_estimates')
+    .select('id,created_at,plate,phone,region,car_model,car_year,status,auction_status,auction_ends_at,awarded_bid_id')
+    .order('created_at', { ascending:false }).limit(60);
+  if (error) { $('viewAuction').innerHTML = '<div class="msg err">'+esc(error.message)+'</div>'; return; }
+
+  const ids = (leads||[]).map(l => l.id);
+  const { data: bids } = await sb.from('bids').select('*').in('estimate_id', ids.length?ids:['00000000-0000-0000-0000-000000000000']);
+  const { data: partners } = await sb.from('partners').select('id,company');
+  const pMap = {}; (partners||[]).forEach(p => pMap[p.id] = p.company);
+  const byLead = {}; (bids||[]).forEach(b => { (byLead[b.estimate_id] = byLead[b.estimate_id] || []).push(b); });
+
+  const open = (leads||[]).filter(l => l.auction_status === 'open');
+  const awarded = (leads||[]).filter(l => l.auction_status === 'awarded');
+  const none = (leads||[]).filter(l => !l.auction_status);
+
+  const bidRows = l => {
+    const bs = (byLead[l.id]||[]).filter(b => b.status !== 'withdrawn').sort((a,b) => b.amount - a.amount);
+    if (!bs.length) return '<div class="muted" style="padding:6px 0">아직 입찰이 없습니다.</div>';
+    return '<div class="tw"><table><tr><th>순위</th><th>폐차장</th><th>입찰가</th><th>입찰시각</th><th></th></tr>'
+      + bs.map((b,i) => `<tr>
+          <td>${i+1}</td><td>${esc(pMap[b.partner_id]||'-')}</td>
+          <td><b>${man(b.amount)}</b></td><td class="muted">${dt(b.created_at)}</td>
+          <td>${l.auction_status==='open' ? `<button class="btn-sm award" data-lead="${l.id}" data-bid="${b.id}" data-partner="${b.partner_id}" data-amount="${b.amount}">낙찰</button>` : (b.status==='awarded'?'<span class="badge b-award">낙찰</span>':'')}</td>
+        </tr>`).join('') + '</table></div>';
+  };
+
+  $('viewAuction').innerHTML = `
+    <div class="card">
+      <h2>진행 중인 경매 (${open.length})</h2>
+      ${open.length ? open.map(l => `<div style="border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px">
+          <div class="row2"><b style="font-size:16px">${esc(l.plate||'-')}</b>
+            <span class="badge b-open">마감 ${dt(l.auction_ends_at)}</span>
+            <span class="muted">${esc(l.region||'')} ${esc(l.car_model||'')} ${esc(l.car_year||'')}</span>
+            <span style="flex:1"></span>
+            <button class="btn-sm ghost close-auction" data-lead="${l.id}">경매 종료</button>
+          </div>
+          ${bidRows(l)}
+        </div>`).join('') : '<div class="empty">진행 중인 경매가 없습니다.</div>'}
+    </div>
+
+    <div class="card">
+      <h2>경매 열기</h2>
+      <p class="sub">문의 중에서 경매에 올릴 건을 고르세요. 기본 마감은 ${DEFAULT_HOURS}시간입니다.</p>
+      <div class="tw"><table>
+        <tr><th>접수일시</th><th>차량번호</th><th>지역</th><th>차종</th><th>마감(시간)</th><th></th></tr>
+        ${none.length ? none.slice(0,25).map(l => `<tr>
+          <td class="muted">${dt(l.created_at)}</td><td><b>${esc(l.plate||'-')}</b></td>
+          <td>${esc(l.region||'-')}</td><td>${esc(l.car_model||'-')}</td>
+          <td><input type="number" class="hrs" value="${DEFAULT_HOURS}" style="width:80px" /></td>
+          <td><button class="btn-sm open-auction" data-lead="${l.id}">경매 열기</button></td>
+        </tr>`).join('') : '<tr><td colspan="6" class="empty">경매로 올릴 문의가 없습니다.</td></tr>'}
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h2>낙찰 완료 (${awarded.length})</h2>
+      ${awarded.length ? '<div class="tw"><table><tr><th>차량번호</th><th>낙찰 업체</th><th>낙찰가</th><th>고객 연락처</th></tr>'
+        + awarded.map(l => {
+            const w = (byLead[l.id]||[]).find(b => b.status === 'awarded');
+            return `<tr><td><b>${esc(l.plate||'-')}</b></td><td>${w?esc(pMap[w.partner_id]||'-'):'-'}</td>
+              <td><b>${w?man(w.amount):'-'}</b></td><td>${esc(l.phone||'-')}</td></tr>`;
+          }).join('') + '</table></div>'
+        : '<div class="empty">낙찰된 건이 없습니다.</div>'}
+    </div>`;
+
+  document.querySelectorAll('.open-auction').forEach(b => b.addEventListener('click', () => openAuction(b)));
+  document.querySelectorAll('.close-auction').forEach(b => b.addEventListener('click', () => closeAuction(b.dataset.lead)));
+  document.querySelectorAll('.award').forEach(b => b.addEventListener('click', () => award(b.dataset)));
+}
+
+async function openAuction(btn){
+  const lead = btn.dataset.lead;
+  const hrs = Number(btn.closest('tr').querySelector('.hrs').value) || DEFAULT_HOURS;
+  const now = new Date(), ends = new Date(now.getTime() + hrs*3600000);
+  btn.disabled = true; btn.textContent = '여는 중...';
+  const { error } = await sb.from('pecha_estimates').update({
+    auction_status: 'open', auction_open_at: now.toISOString(), auction_ends_at: ends.toISOString()
+  }).eq('id', lead);
+  if (error) { alert('실패: ' + error.message); btn.disabled = false; btn.textContent='경매 열기'; return; }
+  loadAuctions();
+}
+
+async function closeAuction(lead){
+  if (!confirm('이 경매를 종료할까요? (낙찰 없이 마감)')) return;
+  const { error } = await sb.from('pecha_estimates').update({ auction_status: 'closed' }).eq('id', lead);
+  if (error) { alert('실패: ' + error.message); return; }
+  loadAuctions();
+}
+
+async function award(d){
+  if (!confirm('이 업체를 낙찰 처리할까요?\n낙찰되면 해당 업체에만 고객 연락처가 공개됩니다.')) return;
+  // 1) 낙찰 기록
+  const { error: ae } = await sb.from('awards').upsert({
+    estimate_id: d.lead, bid_id: d.bid, partner_id: d.partner, amount: Number(d.amount), state: 'awarded'
+  }, { onConflict: 'estimate_id' });
+  if (ae) { alert('실패: ' + ae.message); return; }
+  // 2) 입찰 상태 정리
+  await sb.from('bids').update({ status: 'lost' }).eq('estimate_id', d.lead).eq('status', 'active');
+  await sb.from('bids').update({ status: 'awarded' }).eq('id', d.bid);
+  // 3) 문의 상태 갱신
+  await sb.from('pecha_estimates').update({ auction_status: 'awarded', awarded_bid_id: d.bid }).eq('id', d.lead);
+  loadAuctions();
+}
+
+/* ========== 폐차장 관리 ========== */
+async function loadPartners(){
+  $('viewPartners').innerHTML = '<div class="empty">불러오는 중...</div>';
+  const { data, error } = await sb.from('partners').select('*').order('created_at', { ascending:false });
+  if (error) { $('viewPartners').innerHTML = '<div class="msg err">'+esc(error.message)+'</div>'; return; }
+  const lbl = { pending:'<span class="badge b-pending">승인 대기</span>', approved:'<span class="badge b-approved">승인</span>', suspended:'<span class="badge b-susp">정지</span>' };
+  $('viewPartners').innerHTML = `<div class="card">
+    <h2>가입 폐차장 (${(data||[]).length})</h2>
+    <p class="sub">승인하면 그 업체가 입찰에 참여할 수 있습니다. ⚠️ 승인 전에 사업자등록증과 자동차관리사업(해체재활용) 등록증을 꼭 확인하세요.</p>
+    <div class="tw"><table>
+      <tr><th>신청일</th><th>상호</th><th>등록번호</th><th>지역</th><th>연락처</th><th>이메일</th><th>상태</th><th></th></tr>
+      ${(data||[]).length ? data.map(p => `<tr>
+        <td class="muted">${dt(p.created_at)}</td>
+        <td><b>${esc(p.company)}</b><div class="muted">${esc(p.ceo||'')}</div></td>
+        <td class="muted">${esc(p.license_no||'-')}<div>${esc(p.biz_no||'')}</div></td>
+        <td>${esc((p.regions||[]).join(', '))}</td>
+        <td>${esc(p.phone||'-')}</td>
+        <td class="muted">${esc(p.email||'-')}</td>
+        <td>${lbl[p.status]||esc(p.status)}</td>
+        <td class="row2">
+          ${p.status!=='approved' ? `<button class="btn-sm p-approve" data-id="${p.id}">승인</button>` : ''}
+          ${p.status==='approved' ? `<button class="btn-sm warn p-suspend" data-id="${p.id}">정지</button>` : ''}
+        </td></tr>`).join('') : '<tr><td colspan="8" class="empty">가입 신청한 폐차장이 없습니다.</td></tr>'}
+    </table></div>
+    <div class="msg" style="background:#f9fafb;color:var(--gray)">승인해도 그 업체의 <b>로그인 계정 연결</b>이 필요합니다. 계정 연결은 Supabase에서 partner_users 테이블에 추가하거나, 담당자에게 요청하세요.</div>
+  </div>`;
+  document.querySelectorAll('.p-approve').forEach(b => b.addEventListener('click', () => setPartner(b.dataset.id, 'approved')));
+  document.querySelectorAll('.p-suspend').forEach(b => b.addEventListener('click', () => setPartner(b.dataset.id, 'suspended')));
+}
+
+async function setPartner(id, status){
+  const t = status === 'approved' ? '승인' : '정지';
+  if (!confirm(`이 폐차장을 ${t} 처리할까요?` + (status==='approved' ? '\n승인하면 그 업체 계정이 바로 입찰할 수 있습니다.' : ''))) return;
+  const { data: { session } } = await sb.auth.getSession();
+  const r = await fetch('/api/partner-approve', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ partner_id: id, status, token: session ? session.access_token : '' })
+  });
+  const j = await r.json().catch(() => ({}));
+  if (!j.ok) { alert('실패: ' + (j.error || r.status)); return; }
+  if (status === 'approved' && !j.linked) alert('업체는 승인됐지만 ' + (j.note || '로그인 계정 연결이 되지 않았습니다.'));
+  loadPartners();
+}
+
+boot();
+</script>
+</body>
+</html>

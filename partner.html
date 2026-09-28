@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>퍼스트 폐차 · 폐차장 파트너</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3EP%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{--blue:#2563eb;--blue-dark:#1d4ed8;--navy:#111c2e;--ink:#1e2939;--gray:#6b7280;--line:#e3e8ef;--bg:#f4f7fc}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Pretendard,-apple-system,'Malgun Gothic',sans-serif;font-size:15px;line-height:1.6}
+  a{color:var(--blue)}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+  .topbar .in{max-width:980px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:10px}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--navy)}
+  .brand i{width:26px;height:26px;border-radius:8px;background:var(--blue);color:#fff;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:15px}
+  .sp{flex:1}
+  .topbar button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 12px;font-size:13px;cursor:pointer;font-family:inherit}
+  .wrap{max-width:980px;margin:0 auto;padding:20px 16px 60px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:16px}
+  h1{font-size:20px;margin:0 0 6px;color:var(--navy)}
+  h2{font-size:17px;margin:0 0 12px;color:var(--navy)}
+  p.sub{color:var(--gray);font-size:13.5px;margin:0 0 16px}
+  label{display:block;font-size:13px;color:var(--gray);margin:12px 0 5px;font-weight:600}
+  input,select,textarea{width:100%;border:1.5px solid var(--line);border-radius:9px;padding:10px 12px;font-size:15px;font-family:inherit;background:#fff;color:var(--ink)}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .btn{width:100%;margin-top:16px;border:0;background:var(--navy);color:#fff;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+  .btn.blue{background:var(--blue)}
+  .btn:disabled{opacity:.55;cursor:default}
+  .btn-sm{border:0;background:var(--blue);color:#fff;border-radius:8px;padding:8px 14px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit}
+  .btn-sm.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  .tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+  .tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px;font-size:13.5px;cursor:pointer;font-family:inherit}
+  .tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .msg{border-radius:10px;padding:12px 14px;font-size:14px;margin-top:12px}
+  .msg.err{background:#fef2f2;color:#b91c1c}
+  .msg.ok{background:#ecfdf3;color:#166534}
+  .msg.info{background:#eff6ff;color:#1d4ed8}
+  .note{background:#f9fafb;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--gray);line-height:1.8}
+  .auc{border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px;background:#fff}
+  .auc-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .plate{font-weight:800;font-size:17px;color:var(--navy)}
+  .badge{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700}
+  .b-time{background:#fff7e6;color:#92400e}
+  .b-top{background:#ecfdf3;color:#166534}
+  .b-mine{background:#eff6ff;color:#1d4ed8}
+  .b-await{background:#f1f3f6;color:#6b7280}
+  .kv{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13.5px;color:var(--gray);margin-bottom:12px}
+  .kv b{color:var(--ink);font-weight:600}
+  .bidrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .bidrow input{max-width:180px}
+  .muted{color:var(--gray)}
+  .empty{text-align:center;color:var(--gray);padding:34px 10px;font-size:14px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+  th{font-size:12.5px;color:var(--gray);font-weight:600}
+  .tw{overflow-x:auto}
+  @media(max-width:560px){ .row{grid-template-columns:1fr} .card{padding:18px 16px} }
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="in">
+  <span class="brand"><i>P</i>퍼스트 폐차 · 파트너</span>
+  <span class="sp"></span>
+  <span id="who" class="muted" style="font-size:13px"></span>
+  <button id="logoutBtn" style="display:none">로그아웃</button>
+</div></div>
+
+<div class="wrap">
+
+  <!-- 로그인 / 가입 -->
+  <div id="gate">
+    <div class="tabs">
+      <button class="tab on" data-g="login">로그인</button>
+      <button class="tab" data-g="signup">폐차장 가입 신청</button>
+    </div>
+
+    <div class="card" id="loginCard">
+      <h1>파트너 로그인</h1>
+      <p class="sub">승인된 폐차장만 입찰에 참여할 수 있습니다.</p>
+      <form id="loginForm">
+        <label>이메일<input id="lEmail" type="email" autocomplete="username" required /></label>
+        <label>비밀번호<input id="lPw" type="password" autocomplete="current-password" required /></label>
+        <button class="btn" id="loginBtn">로그인</button>
+      </form>
+      <div id="loginMsg"></div>
+    </div>
+
+    <div class="card" id="signupCard" style="display:none">
+      <h1>폐차장 가입 신청</h1>
+      <p class="sub">자동차관리사업(해체재활용) 등록 업체만 신청할 수 있습니다. 서류 확인 후 승인해 드립니다.</p>
+      <form id="signupForm">
+        <div class="row">
+          <label>상호 *<input id="sCompany" required placeholder="예: 대성폐차산업(주)" /></label>
+          <label>대표자<input id="sCeo" placeholder="예: 홍길동" /></label>
+        </div>
+        <div class="row">
+          <label>사업자등록번호<input id="sBiz" placeholder="000-00-00000" /></label>
+          <label>자동차관리사업 등록번호<input id="sLicense" placeholder="제00-0000-000000호" /></label>
+        </div>
+        <div class="row">
+          <label>담당자 연락처 *<input id="sPhone" required placeholder="010-0000-0000" /></label>
+          <label>활동 지역 *<input id="sRegions" required placeholder="예: 경기, 서울" /></label>
+        </div>
+        <label>사업장 주소<input id="sAddr" placeholder="예: 경기도 양주시 ..." /></label>
+        <label>로그인 이메일 *<input id="sEmail" type="email" required autocomplete="username" /></label>
+        <label>비밀번호 * <span class="muted">(8자 이상)</span><input id="sPw" type="password" minlength="8" required autocomplete="new-password" /></label>
+        <div class="note">가입 신청 후 <b>퍼스트 폐차 운영자의 승인</b>이 있어야 입찰할 수 있습니다. 서류(사업자등록증·자동차관리사업 등록증)는 담당자가 별도로 요청드립니다.</div>
+        <button class="btn blue" id="signupBtn">가입 신청하기</button>
+      </form>
+      <div id="signupMsg"></div>
+    </div>
+  </div>
+
+  <!-- 파트너 화면 -->
+  <div id="app" style="display:none">
+    <div id="statusBox"></div>
+    <div class="tabs" id="appTabs">
+      <button class="tab on" data-t="open">🔨 입찰 가능</button>
+      <button class="tab" data-t="mine">📝 내 입찰</button>
+      <button class="tab" data-t="won">✅ 낙찰 건</button>
+    </div>
+
+    <div id="viewOpen"></div>
+    <div id="viewMine" style="display:none"></div>
+    <div id="viewWon" style="display:none"></div>
+  </div>
+
+</div>
+
+<script>
+/* ===== Supabase ===== */
+const SUPABASE_URL = 'https://iaowzoejbfizeuiwohku.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_-GbHQLU1fTsKP17qJkVSAw_QOIRySP6';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = id => document.getElementById(id);
+const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const won = n => (n==null?'-':Number(n).toLocaleString('ko-KR')+'원');
+const man = n => (n==null?'':Math.round(Number(n)/10000).toLocaleString('ko-KR')+'만원');
+
+let ME = null;        // { partner, role }
+let curTab = 'open';
+
+/* ===== 로그인/가입 탭 ===== */
+document.querySelectorAll('.tab[data-g]').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.tab[data-g]').forEach(x => x.classList.remove('on'));
+  b.classList.add('on');
+  const g = b.dataset.g;
+  $('loginCard').style.display  = g === 'login'  ? '' : 'none';
+  $('signupCard').style.display = g === 'signup' ? '' : 'none';
+}));
+
+/* ===== 가입 신청 ===== */
+$('signupForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('signupBtn'); btn.disabled = true; btn.textContent = '신청 중...';
+  $('signupMsg').innerHTML = '';
+  try {
+    // 1) 업체 등록(승인 대기)
+    const regions = $('sRegions').value.split(/[,\s]+/).filter(Boolean);
+    const { data: p, error: pe } = await sb.from('partners').insert({
+      company: $('sCompany').value.trim(),
+      ceo: $('sCeo').value.trim() || null,
+      biz_no: $('sBiz').value.trim() || null,
+      license_no: $('sLicense').value.trim() || null,
+      phone: $('sPhone').value.trim(),
+      email: $('sEmail').value.trim(),
+      address: $('sAddr').value.trim() || null,
+      regions, status: 'pending'
+    }).select('id').single();
+    if (pe) throw pe;
+
+    // 2) 로그인 계정 생성 (파트너 연결은 운영자가 승인 시 처리)
+    const { error: ae } = await sb.auth.signUp({
+      email: $('sEmail').value.trim(),
+      password: $('sPw').value,
+      options: { data: { partner_id: p.id, company: $('sCompany').value.trim() } }
+    });
+    if (ae) throw ae;
+
+    $('signupMsg').innerHTML = '<div class="msg ok">✅ 가입 신청이 접수되었습니다.<br>운영자 승인 후 입찰하실 수 있습니다. 승인되면 담당자가 연락드립니다.</div>';
+    $('signupForm').reset();
+  } catch (err) {
+    $('signupMsg').innerHTML = '<div class="msg err">신청 실패: ' + esc(err.message || err) + '</div>';
+  }
+  btn.disabled = false; btn.textContent = '가입 신청하기';
+});
+
+/* ===== 로그인 ===== */
+$('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('loginBtn'); btn.disabled = true; btn.textContent = '로그인 중...';
+  $('loginMsg').innerHTML = '';
+  const { error } = await sb.auth.signInWithPassword({ email: $('lEmail').value.trim(), password: $('lPw').value });
+  btn.disabled = false; btn.textContent = '로그인';
+  if (error) { $('loginMsg').innerHTML = '<div class="msg err">로그인 실패: 이메일/비밀번호를 확인하세요.</div>'; return; }
+  boot();
+});
+$('logoutBtn').addEventListener('click', async () => { await sb.auth.signOut(); location.reload(); });
+
+/* ===== 진입 ===== */
+async function boot(){
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) { $('gate').style.display=''; $('app').style.display='none'; $('logoutBtn').style.display='none'; return; }
+
+  $('who').textContent = user.email;
+  $('logoutBtn').style.display = '';
+
+  // 내 업체 찾기
+  const { data: pu } = await sb.from('partner_users').select('partner_id, role').eq('user_id', user.id).maybeSingle();
+  let partner = null;
+  if (pu) {
+    const { data } = await sb.from('partners').select('*').eq('id', pu.partner_id).maybeSingle();
+    partner = data;
+  }
+  ME = { partner, role: pu ? pu.role : null };
+
+  $('gate').style.display = 'none';
+  $('app').style.display = '';
+
+  if (!partner) {
+    $('statusBox').innerHTML = '<div class="card"><h2>승인 대기 중이에요</h2><p class="sub">가입 신청은 접수되었지만 아직 업체 승인이 완료되지 않았습니다. 승인되면 이 화면에서 바로 입찰하실 수 있습니다.</p><div class="note">문의: 031-868-8700</div></div>';
+    $('appTabs').style.display = 'none'; return;
+  }
+  if (partner.status !== 'approved') {
+    const t = partner.status === 'suspended' ? '이용이 정지된 계정입니다.' : '승인 대기 중이에요.';
+    $('statusBox').innerHTML = '<div class="card"><h2>'+esc(partner.company)+'</h2><p class="sub">'+t+'</p><div class="note">문의: 031-868-8700</div></div>';
+    $('appTabs').style.display = 'none'; return;
+  }
+  $('statusBox').innerHTML = '<div class="msg info" style="margin:0 0 14px">'+esc(partner.company)+' · 승인 완료 — 입찰에 참여하실 수 있습니다.</div>';
+  loadTab('open');
+}
+
+/* ===== 탭 ===== */
+document.querySelectorAll('.tab[data-t]').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.tab[data-t]').forEach(x => x.classList.remove('on'));
+  b.classList.add('on'); loadTab(b.dataset.t);
+}));
+function showView(t){
+  curTab = t;
+  $('viewOpen').style.display = t==='open' ? '' : 'none';
+  $('viewMine').style.display = t==='mine' ? '' : 'none';
+  $('viewWon').style.display  = t==='won'  ? '' : 'none';
+}
+async function loadTab(t){
+  showView(t);
+  if (t==='open') return loadOpen();
+  if (t==='mine') return loadMine();
+  if (t==='won')  return loadWon();
+}
+
+/* ===== 입찰 가능 목록 ===== */
+function leftTime(ends){
+  if (!ends) return '';
+  const ms = new Date(ends) - new Date();
+  if (ms <= 0) return '마감';
+  const h = Math.floor(ms/3600000), m = Math.floor(ms%3600000/60000);
+  return h > 0 ? `${h}시간 ${m}분 남음` : `${m}분 남음`;
+}
+function condText(j){
+  if (!j) return '';
+  const map = { drivable:'운행가능', accident:'사고', flood:'침수', no_catalyst:'촉매없음', lien:'압류' };
+  return Object.entries(j).filter(([,v])=>v===true).map(([k])=>map[k]||k).join(' · ');
+}
+async function loadOpen(){
+  $('viewOpen').innerHTML = '<div class="empty">불러오는 중...</div>';
+  const { data: list, error } = await sb.from('auction_board').select('*').order('auction_ends_at', { ascending: true });
+  if (error) { $('viewOpen').innerHTML = '<div class="msg err">목록을 불러오지 못했습니다: '+esc(error.message)+'</div>'; return; }
+  const { data: mine } = await sb.from('bids').select('estimate_id, amount, status').eq('partner_id', ME.partner.id);
+  const myMap = {}; (mine||[]).forEach(b => myMap[b.estimate_id] = b);
+
+  if (!list || !list.length) { $('viewOpen').innerHTML = '<div class="card"><div class="empty">지금 입찰할 수 있는 차량이 없습니다.<br>새 경매가 열리면 문자로 알려드립니다.</div></div>'; return; }
+
+  $('viewOpen').innerHTML = list.map(a => {
+    const my = myMap[a.id];
+    const cond = condText(a.car_condition_json);
+    return `<div class="auc" data-id="${a.id}">
+      <div class="auc-top">
+        <span class="plate">${esc(a.plate_masked||'차량')}</span>
+        ${a.car_model ? '<span class="muted">'+esc(a.car_model)+'</span>' : ''}
+        <span class="sp" style="flex:1"></span>
+        <span class="badge b-time">⏱ ${leftTime(a.auction_ends_at)}</span>
+      </div>
+      <div class="kv">
+        <span>연식 <b>${esc(a.car_year||'미확인')}</b></span>
+        <span>지역 <b>${esc(a.region||'미확인')}</b></span>
+        ${cond ? '<span>상태 <b>'+esc(cond)+'</b></span>' : ''}
+        <span>입찰 <b>${a.bid_count||0}건</b></span>
+        ${a.top_amount ? '<span>최고가 <b>'+man(a.top_amount)+'</b></span>' : ''}
+        ${a.min_bid ? '<span>최소 <b>'+man(a.min_bid)+'</b></span>' : ''}
+      </div>
+      <div class="bidrow">
+        <input type="number" inputmode="numeric" class="bid-input" placeholder="매입가(만원)" value="${my?Math.round(my.amount/10000):''}" />
+        <button class="btn-sm bid-save">${my ? '입찰 수정' : '입찰하기'}</button>
+        ${my ? '<button class="btn-sm ghost bid-drop">철회</button><span class="badge b-mine">내 입찰 '+man(my.amount)+'</span>' : ''}
+        <span class="bid-msg muted"></span>
+      </div>
+    </div>`;
+  }).join('');
+
+  $('viewOpen').querySelectorAll('.auc').forEach(card => {
+    const id = card.dataset.id;
+    card.querySelector('.bid-save').addEventListener('click', () => saveBid(id, card));
+    const drop = card.querySelector('.bid-drop');
+    if (drop) drop.addEventListener('click', () => dropBid(id, card));
+  });
+}
+
+async function saveBid(estimateId, card){
+  const input = card.querySelector('.bid-input');
+  const msg = card.querySelector('.bid-msg');
+  const manWon = Number(input.value);
+  if (!manWon || manWon <= 0) { msg.textContent = '금액을 입력하세요'; return; }
+  const amount = Math.round(manWon) * 10000;
+  msg.textContent = '저장 중...';
+  const { error } = await sb.from('bids').upsert({
+    estimate_id: estimateId, partner_id: ME.partner.id, amount, status: 'active', updated_at: new Date().toISOString()
+  }, { onConflict: 'estimate_id,partner_id' });
+  if (error) { msg.textContent = '실패: ' + error.message; return; }
+  msg.textContent = '✅ 입찰 완료';
+  loadOpen();
+}
+async function dropBid(estimateId, card){
+  if (!confirm('입찰을 철회할까요?')) return;
+  const { error } = await sb.from('bids').update({ status: 'withdrawn' })
+    .eq('estimate_id', estimateId).eq('partner_id', ME.partner.id);
+  if (error) { alert('실패: ' + error.message); return; }
+  loadOpen();
+}
+
+/* ===== 내 입찰 ===== */
+async function loadMine(){
+  $('viewMine').innerHTML = '<div class="empty">불러오는 중...</div>';
+  const { data, error } = await sb.from('bids').select('*').eq('partner_id', ME.partner.id).order('created_at', { ascending: false });
+  if (error) { $('viewMine').innerHTML = '<div class="msg err">'+esc(error.message)+'</div>'; return; }
+  if (!data || !data.length) { $('viewMine').innerHTML = '<div class="card"><div class="empty">아직 입찰한 내역이 없습니다.</div></div>'; return; }
+  const label = { active:'진행중', withdrawn:'철회', awarded:'낙찰', lost:'유찰' };
+  $('viewMine').innerHTML = '<div class="card"><h2>내 입찰 내역</h2><div class="tw"><table>'
+    + '<tr><th>입찰일</th><th>금액</th><th>상태</th><th>메모</th></tr>'
+    + data.map(b => `<tr><td>${new Date(b.created_at).toLocaleString('ko-KR')}</td><td><b>${man(b.amount)}</b></td><td>${label[b.status]||b.status}</td><td>${esc(b.note||'')}</td></tr>`).join('')
+    + '</table></div></div>';
+}
+
+/* ===== 낙찰 건 (고객 연락처 공개) ===== */
+async function loadWon(){
+  $('viewWon').innerHTML = '<div class="empty">불러오는 중...</div>';
+  const { data, error } = await sb.from('my_awarded_leads').select('*').order('created_at', { ascending: false });
+  if (error) { $('viewWon').innerHTML = '<div class="msg err">'+esc(error.message)+'</div>'; return; }
+  if (!data || !data.length) { $('viewWon').innerHTML = '<div class="card"><div class="empty">낙찰된 건이 없습니다.</div></div>'; return; }
+  const st = { awarded:'낙찰', picked:'인수완료', done:'처리완료', canceled:'취소' };
+  $('viewWon').innerHTML = data.map(a => `<div class="auc">
+      <div class="auc-top">
+        <span class="plate">${esc(a.plate||'-')}</span>
+        <span class="badge b-top">${st[a.state]||a.state} ${man(a.amount)}</span>
+      </div>
+      <div class="kv">
+        <span>연락처 <b><a href="tel:${(a.phone||'').replace(/\D/g,'')}">${esc(a.phone||'-')}</a></b></span>
+        <span>지역 <b>${esc(a.region||'-')}</b></span>
+        <span>차종 <b>${esc(a.car_model||'-')}</b></span>
+        <span>인수예정 <b>${a.pickup_at?String(a.pickup_at).slice(0,10):'미정'}</b></span>
+      </div>
+      <div class="note">고객 연락처는 낙찰 건에만 공개됩니다. 입찰 금액과 다른 금액을 제시하는 현장 감액은 제재 대상입니다.</div>
+    </div>`).join('');
+}
+
+/* 세션 유지 */
+sb.auth.onAuthStateChange(() => {});
+boot();
+</script>
+</body>
+</html>
