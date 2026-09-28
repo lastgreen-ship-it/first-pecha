@@ -304,7 +304,7 @@ async function loadOpen(){
         ${a.top_amount ? '<span>최고가 <b>'+man(a.top_amount)+'</b></span>' : ''}
         ${a.min_bid ? '<span>최소 <b>'+man(a.min_bid)+'</b></span>' : ''}
       </div>
-      <div class="bidrow">
+      <div class="bidrow" data-ends="${a.auction_ends_at||''}">
         <input type="number" inputmode="numeric" class="bid-input" placeholder="매입가(만원)" value="${my?Math.round(my.amount/10000):''}" />
         <button class="btn-sm bid-save">${my ? '입찰 수정' : '입찰하기'}</button>
         ${my ? '<button class="btn-sm ghost bid-drop">철회</button><span class="badge b-mine">내 입찰 '+man(my.amount)+'</span>' : ''}
@@ -324,6 +324,8 @@ async function loadOpen(){
 async function saveBid(estimateId, card){
   const input = card.querySelector('.bid-input');
   const msg = card.querySelector('.bid-msg');
+  const ends = card.querySelector('.bidrow').dataset.ends;
+  if (ends && new Date(ends) <= new Date()) { msg.textContent = '마감된 경매입니다'; loadOpen(); return; }
   const manWon = Number(input.value);
   if (!manWon || manWon <= 0) { msg.textContent = '금액을 입력하세요'; return; }
   const amount = Math.round(manWon) * 10000;
@@ -349,7 +351,7 @@ async function loadMine(){
   const { data, error } = await sb.from('bids').select('*').eq('partner_id', ME.partner.id).order('created_at', { ascending: false });
   if (error) { $('viewMine').innerHTML = '<div class="msg err">'+esc(error.message)+'</div>'; return; }
   if (!data || !data.length) { $('viewMine').innerHTML = '<div class="card"><div class="empty">아직 입찰한 내역이 없습니다.</div></div>'; return; }
-  const label = { active:'진행중', withdrawn:'철회', awarded:'낙찰', lost:'유찰' };
+  const label = { active:'진행중', withdrawn:'철회', awarded:'낙찰', lost:'마감(유찰)' };
   $('viewMine').innerHTML = '<div class="card"><h2>내 입찰 내역</h2><div class="tw"><table>'
     + '<tr><th>입찰일</th><th>금액</th><th>상태</th><th>메모</th></tr>'
     + data.map(b => `<tr><td>${new Date(b.created_at).toLocaleString('ko-KR')}</td><td><b>${man(b.amount)}</b></td><td>${label[b.status]||b.status}</td><td>${esc(b.note||'')}</td></tr>`).join('')
