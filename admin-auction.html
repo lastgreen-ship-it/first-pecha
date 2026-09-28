@@ -124,9 +124,22 @@ async function boot(){
   loadAuctions();
 }
 
+/* 마감 시간이 지난 경매 자동 종료 (화면 열 때마다 정리) */
+async function autoCloseExpired(){
+  const now = new Date().toISOString();
+  const { data } = await sb.from('pecha_estimates').update({ auction_status: 'closed' })
+    .eq('auction_status', 'open').lt('auction_ends_at', now).select('id');
+  if (data && data.length) {
+    await sb.from('bids').update({ status: 'lost' })
+      .in('estimate_id', data.map(r => r.id)).eq('status', 'active');
+  }
+  return (data || []).length;
+}
+
 /* ========== 경매 · 입찰 ========== */
 async function loadAuctions(){
   $('viewAuction').innerHTML = '<div class="empty">불러오는 중...</div>';
+  const autoClosed = await autoCloseExpired();
   const { data: leads, error } = await sb.from('pecha_estimates')
     .select('id,created_at,plate,phone,region,car_model,car_year,status,auction_status,auction_ends_at,awarded_bid_id')
     .order('created_at', { ascending:false }).limit(60);
@@ -154,6 +167,7 @@ async function loadAuctions(){
   };
 
   $('viewAuction').innerHTML = `
+    ${autoClosed ? `<div class="msg ok" style="margin-bottom:14px">⏱ 마감 시간이 지난 경매 ${autoClosed}건을 자동으로 종료했습니다.</div>` : ''}
     <div class="card">
       <h2>진행 중인 경매 (${open.length})</h2>
       ${open.length ? open.map(l => `<div style="border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px">
