@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>내 폐차 견적 결과 | 퍼스트 폐차</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3EP%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{--blue:#2563eb;--navy:#111c2e;--ink:#1e2939;--gray:#6b7280;--line:#e3e8ef;--bg:#f4f7fc;--gold:#7dd3fc}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Pretendard,-apple-system,'Malgun Gothic',sans-serif;font-size:15px;line-height:1.65}
+  .top{background:#fff;border-bottom:1px solid var(--line)}
+  .top .in{max-width:520px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;gap:8px}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--navy);text-decoration:none;font-size:15px}
+  .brand i{width:26px;height:26px;border-radius:8px;background:var(--blue);color:#fff;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:15px}
+  .wrap{max-width:520px;margin:0 auto;padding:18px 18px 70px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:14px}
+  h1{font-size:19px;margin:0 0 4px;color:var(--navy)}
+  .sub{color:var(--gray);font-size:13.5px;margin:0}
+  .plate{display:inline-block;background:var(--navy);color:#fff;border-radius:10px;padding:7px 14px;font-weight:800;font-size:17px;letter-spacing:.5px}
+  .meta{color:var(--gray);font-size:13px;margin-top:10px}
+  .top-amount{text-align:center;padding:8px 0 4px}
+  .top-amount .lbl{color:var(--gray);font-size:13.5px}
+  .top-amount .num{font-size:38px;font-weight:900;color:var(--blue);letter-spacing:-1px;margin-top:2px}
+  .top-amount .num small{font-size:20px;margin-left:2px}
+  .bid{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px;background:#fff}
+  .bid.best{border-color:var(--blue);background:#f5f9ff}
+  .bid .rank{width:30px;height:30px;border-radius:50%;background:#eef2f7;color:var(--gray);font-weight:800;font-size:13px;display:grid;place-items:center;flex:none}
+  .bid.best .rank{background:var(--blue);color:#fff}
+  .bid .info{flex:1;min-width:0}
+  .bid .amt{font-size:19px;font-weight:800;color:var(--navy)}
+  .bid .who{font-size:12.5px;color:var(--gray);margin-top:1px}
+  .pick{border:0;background:var(--navy);color:#fff;border-radius:10px;padding:10px 14px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .bid.best .pick{background:var(--blue)}
+  .pick:disabled{opacity:.5;cursor:default}
+  .badge{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700}
+  .b-won{background:#ecfdf3;color:#166534}
+  .b-wait{background:#fff7e6;color:#92400e}
+  .note{background:#f9fafb;border:1px solid var(--line);border-radius:12px;padding:14px;font-size:12.5px;color:var(--gray);line-height:1.9;margin-top:14px}
+  .done{background:#ecfdf3;border:1px solid #b7e9c9;border-radius:14px;padding:18px;text-align:center}
+  .done .big{font-size:22px;font-weight:900;color:#166534}
+  .call{display:block;text-align:center;background:var(--navy);color:#fff;text-decoration:none;border-radius:12px;padding:14px;font-weight:700;margin-top:12px}
+  .empty{text-align:center;color:var(--gray);padding:34px 8px;font-size:14px;line-height:1.9}
+  .foot{text-align:center;color:var(--gray);font-size:12px;margin-top:22px;line-height:1.9}
+  .foot a{color:var(--gray)}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="in">
+  <a class="brand" href="/"><i>P</i>퍼스트 폐차</a>
+</div></div>
+
+<div class="wrap" id="app">
+  <div class="card"><div class="empty">불러오는 중...</div></div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://iaowzoejbfizeuiwohku.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_-GbHQLU1fTsKP17qJkVSAw_QOIRySP6';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = id => document.getElementById(id);
+const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const man = n => Math.round(Number(n)/10000).toLocaleString('ko-KR');
+const TOKEN = new URLSearchParams(location.search).get('t') || '';
+const SHOP_TEL = '031-868-8700';
+
+function footHtml(){
+  return `<div class="foot">
+    문의 <a href="tel:0318688700">${SHOP_TEL}</a> · 평일 09:00~18:00<br>
+    대성폐차산업(주) · 자동차관리사업등록 제03-4119-000008호<br>
+    <a href="/privacy">개인정보처리방침</a>
+  </div>`;
+}
+
+async function load(){
+  if (!TOKEN){
+    $('app').innerHTML = `<div class="card"><div class="empty">주소가 올바르지 않아요.<br>문자로 받으신 링크로 다시 접속해주세요.</div></div>` + footHtml();
+    return;
+  }
+  const { data, error } = await sb.rpc('my_auction', { token: TOKEN });
+  if (error || !data){
+    $('app').innerHTML = `<div class="card"><div class="empty">견적 정보를 찾을 수 없어요.<br>링크가 만료되었을 수 있습니다.<br><br>☎ <a href="tel:0318688700">${SHOP_TEL}</a> 로 문의해주세요.</div></div>` + footHtml();
+    return;
+  }
+  render(data);
+}
+
+function render(d){
+  const bids = d.bids || [];
+  const awarded = bids.find(b => b.awarded);
+  const open = d.auction_status === 'open';
+  const head = `<div class="card">
+      <span class="plate">${esc(d.plate || '내 차량')}</span>
+      <div class="meta">${[d.car_model, d.car_year].filter(Boolean).map(esc).join(' · ') || '차량정보 확인 중'}</div>
+    </div>`;
+
+  // 1) 낙찰 완료
+  if (awarded){
+    $('app').innerHTML = head + `
+      <div class="card">
+        <div class="done">
+          <div class="sub" style="margin-bottom:4px">판매가 확정되었어요</div>
+          <div class="big">${man(awarded.amount)}만원</div>
+          <div class="sub" style="margin-top:8px">${awarded.company ? esc(awarded.company) : '담당 폐차장'}에서 연락드릴 예정입니다.</div>
+        </div>
+        <div class="note">
+          · 담당자가 차량 인수 일정을 조율해 드립니다.<br>
+          · 안내받은 금액과 다른 금액을 제시받으시면 <b>${SHOP_TEL}</b> 로 알려주세요.<br>
+          · 탁송비는 무료이며, 인수 후 24시간 내 말소 처리됩니다.
+        </div>
+        <a class="call" href="tel:0318688700">☎ 전화 문의하기</a>
+      </div>` + footHtml();
+    return;
+  }
+
+  // 2) 아직 입찰 없음
+  if (!bids.length){
+    $('app').innerHTML = head + `<div class="card"><div class="empty">
+        ${open ? '폐차장들이 입찰하고 있어요.<br>결과가 모이면 문자로 알려드릴게요.' : '아직 입찰 결과가 없어요.<br>담당자가 확인 후 연락드립니다.'}
+      </div>
+      <a class="call" href="tel:0318688700">☎ 전화 문의하기</a></div>` + footHtml();
+    return;
+  }
+
+  // 3) 입찰 목록 + 선택
+  const best = bids[0];
+  $('app').innerHTML = head + `
+    <div class="card">
+      <div class="top-amount">
+        <div class="lbl">가장 높은 매입가</div>
+        <div class="num">${man(best.amount)}<small>만원</small></div>
+      </div>
+      <div class="sub" style="text-align:center">폐차장 ${bids.length}곳이 입찰했어요${open ? ' · 입찰 진행 중' : ''}</div>
+    </div>
+
+    <div class="card">
+      <h1>어디에 판매할까요?</h1>
+      <p class="sub" style="margin-bottom:14px">원하는 금액을 고르시면 해당 폐차장이 연락드립니다.</p>
+      ${bids.map((b,i) => `
+        <div class="bid ${i===0?'best':''}">
+          <div class="rank">${i+1}</div>
+          <div class="info">
+            <div class="amt">${man(b.amount)}만원</div>
+            <div class="who">${i===0?'최고가 · ':''}${String.fromCharCode(65+i)}업체 (선택 시 업체명 공개)</div>
+          </div>
+          <button class="pick" data-bid="${b.id}" data-amt="${b.amount}">선택</button>
+        </div>`).join('')}
+      <div class="note">
+        · 금액은 차량 상태가 신청 내용과 같을 때 유효합니다.<br>
+        · 선택하시면 해당 폐차장에만 연락처가 전달됩니다.<br>
+        · 현장에서 금액을 깎는 경우 <b>${SHOP_TEL}</b> 로 알려주세요. 해당 업체는 제재됩니다.<br>
+        · 판매 의무는 없으며, 고민되시면 전화로 상담해드릴게요.
+      </div>
+    </div>` + footHtml();
+
+  document.querySelectorAll('.pick').forEach(btn => btn.addEventListener('click', () => choose(btn)));
+}
+
+async function choose(btn){
+  const amt = man(btn.dataset.amt);
+  if (!confirm(`${amt}만원에 판매하시겠어요?\n선택하시면 해당 폐차장에서 연락드립니다.`)) return;
+  document.querySelectorAll('.pick').forEach(b => { b.disabled = true; });
+  btn.textContent = '처리 중...';
+  const { data, error } = await sb.rpc('choose_bid', { token: TOKEN, bid: btn.dataset.bid });
+  if (error || !data || !data.ok){
+    alert('선택에 실패했어요: ' + ((data && data.error) || (error && error.message) || '잠시 후 다시 시도해주세요.'));
+    document.querySelectorAll('.pick').forEach(b => { b.disabled = false; });
+    btn.textContent = '선택';
+    return;
+  }
+  load();
+}
+
+load();
+</script>
+</body>
+</html>

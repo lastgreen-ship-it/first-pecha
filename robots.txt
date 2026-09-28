@@ -6,6 +6,9 @@ Disallow: /admin-auction.html
 Disallow: /admin-auction
 Disallow: /partner.html
 Disallow: /partner
+Disallow: /my.html
+Disallow: /my
+Disallow: /supabase_customer_auction.sql
 Disallow: /supabase_auction.sql
 Disallow: /api/
 # 옛 게시판 스팸글 삭제(410) 응답은 검색엔진이 읽어야 색인에서 지워짐

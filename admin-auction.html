@@ -141,7 +141,7 @@ async function loadAuctions(){
   $('viewAuction').innerHTML = '<div class="empty">불러오는 중...</div>';
   const autoClosed = await autoCloseExpired();
   const { data: leads, error } = await sb.from('pecha_estimates')
-    .select('id,created_at,plate,phone,region,car_model,car_year,status,auction_status,auction_ends_at,awarded_bid_id')
+    .select('id,created_at,plate,phone,region,car_model,car_year,status,auction_status,auction_ends_at,awarded_bid_id,access_token')
     .order('created_at', { ascending:false }).limit(60);
   if (error) { $('viewAuction').innerHTML = '<div class="msg err">'+esc(error.message)+'</div>'; return; }
 
@@ -175,6 +175,7 @@ async function loadAuctions(){
             <span class="badge b-open">마감 ${dt(l.auction_ends_at)}</span>
             <span class="muted">${esc(l.region||'')} ${esc(l.car_model||'')} ${esc(l.car_year||'')}</span>
             <span style="flex:1"></span>
+            <button class="btn-sm send-link" data-lead="${l.id}" data-token="${esc(l.access_token||'')}" data-phone="${esc(l.phone||'')}" data-plate="${esc(l.plate||'')}" title="고객에게 결과 확인 링크를 문자로 보냅니다">📨 결과 링크 문자</button>
             <button class="btn-sm ghost close-auction" data-lead="${l.id}">경매 종료</button>
           </div>
           ${bidRows(l)}
@@ -206,9 +207,31 @@ async function loadAuctions(){
         : '<div class="empty">낙찰된 건이 없습니다.</div>'}
     </div>`;
 
+  document.querySelectorAll('.send-link').forEach(b => b.addEventListener('click', () => sendResultLink(b.dataset, byLead)));
   document.querySelectorAll('.open-auction').forEach(b => b.addEventListener('click', () => openAuction(b)));
   document.querySelectorAll('.close-auction').forEach(b => b.addEventListener('click', () => closeAuction(b.dataset.lead)));
   document.querySelectorAll('.award').forEach(b => b.addEventListener('click', () => award(b.dataset)));
+}
+
+/* 고객에게 입찰 결과 확인 링크를 문자로 발송 */
+async function sendResultLink(d, byLead){
+  if (!d.phone) { alert('이 건에는 연락처가 없어요.'); return; }
+  if (!d.token) { alert('결과 링크를 만들 수 없어요. (링크값 없음 — SQL 실행이 필요합니다)'); return; }
+  const bs = (byLead[d.lead] || []).filter(b => b.status !== 'withdrawn');
+  const top = bs.length ? Math.max(...bs.map(b => b.amount)) : 0;
+  const url = 'www.upcyclecar.co.kr/my?t=' + d.token;
+  const text = `[퍼스트 폐차]\n${d.plate || '문의하신 차량'} 폐차 입찰 결과가 나왔어요.\n`
+    + (top ? `· 최고 매입가 ${Math.round(top/10000).toLocaleString('ko-KR')}만원 (폐차장 ${bs.length}곳 입찰)\n` : '')
+    + `아래 링크에서 확인하고 원하는 금액을 선택해주세요.\n▶ ${url}\n문의 ☎ 031-868-8700`;
+  if (!confirm('고객(' + d.phone + ')에게 아래 문자를 보낼까요?\n\n' + text)) return;
+
+  const { data: { session } } = await sb.auth.getSession();
+  const r = await fetch('/api/send-quote', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phone: d.phone, text, token: session ? session.access_token : '' })
+  });
+  const j = await r.json().catch(() => ({}));
+  alert(j.sent ? '✅ 문자를 보냈어요.' : '발송 실패: ' + (j.error || r.status));
 }
 
 async function openAuction(btn){
