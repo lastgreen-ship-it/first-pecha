@@ -68,6 +68,10 @@
   .tabs .bar{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:4px}
   .tab{padding:13px 16px;font-size:14px;font-weight:700;color:var(--gray);cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;font-family:inherit}
   .tab.on{color:var(--blue);border-bottom-color:var(--blue)}
+  /* 입찰 관리(다른 페이지로 이동하는 탭) */
+  .tab-link{display:inline-flex;align-items:center;gap:7px;text-decoration:none;margin-left:auto}
+  .tab-link:hover{color:var(--navy)}
+  .tab-new{background:#ede9fe;color:#5b21b6;border-radius:999px;padding:1px 8px;font-size:11px;font-weight:800;letter-spacing:.2px}
   /* 계산기 */
   .calc-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px;max-width:580px}
   .calc-card h2{font-size:18px;font-weight:900;margin-bottom:4px;display:flex;align-items:center;gap:8px}
@@ -257,6 +261,7 @@
     <div class="bar">
       <button class="tab on" data-tab="leads">📋 문의 목록</button>
       <button class="tab" data-tab="calc">🧮 견적 계산기</button>
+      <a class="tab tab-link" href="/admin-auction" title="폐차장 입찰(역경매) 관리">🔨 입찰 관리 <span class="tab-new">경매</span></a>
     </div>
   </div>
   <div class="wrap" id="viewLeads">
@@ -297,7 +302,6 @@
       <button class="filter add-btn" id="addBtn" title="전화 등으로 직접 받은 문의를 등록">➕ 신규 추가</button>
       <button class="filter" id="csvBtn">📤 CSV</button>
       <button class="filter" id="refreshBtn">🔄 새로고침</button>
-      <a class="filter" href="/admin-auction" style="text-decoration:none;color:inherit;display:inline-block" title="폐차장 입찰(역경매) 관리">🔨 입찰 관리</a>
     </div>
     <div class="st-legend" aria-label="진행단계 색 안내">
       <span><i style="background:#2563eb"></i>신규</span>
