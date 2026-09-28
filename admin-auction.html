@@ -218,11 +218,13 @@ async function award(d){
     estimate_id: d.lead, bid_id: d.bid, partner_id: d.partner, amount: Number(d.amount), state: 'awarded'
   }, { onConflict: 'estimate_id' });
   if (ae) { alert('실패: ' + ae.message); return; }
-  // 2) 입찰 상태 정리
-  await sb.from('bids').update({ status: 'lost' }).eq('estimate_id', d.lead).eq('status', 'active');
-  await sb.from('bids').update({ status: 'awarded' }).eq('id', d.bid);
+  // 2) 입찰 상태 정리 (실패하면 알려준다 — 권한 문제 등을 조용히 넘기지 않도록)
+  const r1 = await sb.from('bids').update({ status: 'lost' }).eq('estimate_id', d.lead).eq('status', 'active');
+  const r2 = await sb.from('bids').update({ status: 'awarded' }).eq('id', d.bid);
   // 3) 문의 상태 갱신
-  await sb.from('pecha_estimates').update({ auction_status: 'awarded', awarded_bid_id: d.bid }).eq('id', d.lead);
+  const r3 = await sb.from('pecha_estimates').update({ auction_status: 'awarded', awarded_bid_id: d.bid }).eq('id', d.lead);
+  const bad = [r1, r2, r3].map(r => r.error && r.error.message).filter(Boolean);
+  if (bad.length) alert('낙찰은 기록됐지만 일부 상태 변경에 실패했어요:\n' + bad.join('\n'));
   loadAuctions();
 }
 
@@ -248,12 +250,14 @@ async function loadPartners(){
         <td class="row2">
           ${p.status!=='approved' ? `<button class="btn-sm p-approve" data-id="${p.id}">승인</button>` : ''}
           ${p.status==='approved' ? `<button class="btn-sm warn p-suspend" data-id="${p.id}">정지</button>` : ''}
+          <button class="btn-sm ghost p-del" data-id="${p.id}" data-name="${esc(p.company)}">삭제</button>
         </td></tr>`).join('') : '<tr><td colspan="8" class="empty">가입 신청한 폐차장이 없습니다.</td></tr>'}
     </table></div>
     <div class="msg" style="background:#f9fafb;color:var(--gray)">승인해도 그 업체의 <b>로그인 계정 연결</b>이 필요합니다. 계정 연결은 Supabase에서 partner_users 테이블에 추가하거나, 담당자에게 요청하세요.</div>
   </div>`;
   document.querySelectorAll('.p-approve').forEach(b => b.addEventListener('click', () => setPartner(b.dataset.id, 'approved')));
   document.querySelectorAll('.p-suspend').forEach(b => b.addEventListener('click', () => setPartner(b.dataset.id, 'suspended')));
+  document.querySelectorAll('.p-del').forEach(b => b.addEventListener('click', () => delPartner(b.dataset.id, b.dataset.name)));
 }
 
 async function setPartner(id, status){
@@ -267,6 +271,14 @@ async function setPartner(id, status){
   const j = await r.json().catch(() => ({}));
   if (!j.ok) { alert('실패: ' + (j.error || r.status)); return; }
   if (status === 'approved' && !j.linked) alert('업체는 승인됐지만 ' + (j.note || '로그인 계정 연결이 되지 않았습니다.'));
+  loadPartners();
+}
+
+/* 잘못 등록된 업체 삭제 (테스트 정리용) */
+async function delPartner(id, name){
+  if (!confirm(`"${name}" 업체를 삭제할까요?\n입찰 내역도 함께 지워집니다. 되돌릴 수 없습니다.`)) return;
+  const { error } = await sb.from('partners').delete().eq('id', id);
+  if (error) { alert('실패: ' + error.message); return; }
   loadPartners();
 }
 

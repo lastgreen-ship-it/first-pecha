@@ -161,8 +161,9 @@ $('signupForm').addEventListener('submit', async (e) => {
   $('signupMsg').innerHTML = '';
   try {
     // 1) 업체 등록(승인 대기)
+    //    ⚠️ 비로그인 사용자는 조회 권한이 없으므로 insert 후 select 하지 않는다.
     const regions = $('sRegions').value.split(/[,\s]+/).filter(Boolean);
-    const { data: p, error: pe } = await sb.from('partners').insert({
+    const { error: pe } = await sb.from('partners').insert({
       company: $('sCompany').value.trim(),
       ceo: $('sCeo').value.trim() || null,
       biz_no: $('sBiz').value.trim() || null,
@@ -171,14 +172,14 @@ $('signupForm').addEventListener('submit', async (e) => {
       email: $('sEmail').value.trim(),
       address: $('sAddr').value.trim() || null,
       regions, status: 'pending'
-    }).select('id').single();
+    });
     if (pe) throw pe;
 
-    // 2) 로그인 계정 생성 (파트너 연결은 운영자가 승인 시 처리)
+    // 2) 로그인 계정 생성 (업체 연결은 운영자가 승인할 때 이메일로 매칭)
     const { error: ae } = await sb.auth.signUp({
       email: $('sEmail').value.trim(),
       password: $('sPw').value,
-      options: { data: { partner_id: p.id, company: $('sCompany').value.trim() } }
+      options: { data: { company: $('sCompany').value.trim() } }
     });
     if (ae) throw ae;
 

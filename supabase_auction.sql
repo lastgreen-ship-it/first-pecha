@@ -126,6 +126,10 @@ drop policy if exists "admin manage partners" on public.partners;
 create policy "admin manage partners" on public.partners
   for update to authenticated using (public.is_admin()) with check (public.is_admin());
 
+drop policy if exists "admin delete partners" on public.partners;
+create policy "admin delete partners" on public.partners
+  for delete to authenticated using (public.is_admin());
+
 -- partner_users: 본인 행만 조회, 관리자 전체
 drop policy if exists "pu read own" on public.partner_users;
 create policy "pu read own" on public.partner_users
@@ -146,6 +150,11 @@ create policy "bid update own" on public.bids
   for update to authenticated
   using (partner_id = public.my_partner_id())
   with check (partner_id = public.my_partner_id());
+
+-- 운영자는 낙찰/유찰 처리를 위해 입찰 상태를 바꿀 수 있어야 한다
+drop policy if exists "bid admin update" on public.bids;
+create policy "bid admin update" on public.bids
+  for update to authenticated using (public.is_admin()) with check (public.is_admin());
 
 drop policy if exists "bid read own or admin" on public.bids;
 create policy "bid read own or admin" on public.bids
@@ -182,14 +191,17 @@ create policy "settle admin write" on public.settlements
 --    기존 "auth read" 정책은 로그인한 사용자 전체를 허용 → 파트너도 고객 연락처를
 --    볼 수 있게 되므로, 관리자(파트너로 등록되지 않은 계정)만 읽도록 교체한다.
 drop policy if exists "auth read" on public.pecha_estimates;
+drop policy if exists "admin read leads" on public.pecha_estimates;
 create policy "admin read leads" on public.pecha_estimates
   for select to authenticated using (public.is_admin());
 
 drop policy if exists "auth update" on public.pecha_estimates;
+drop policy if exists "admin update leads" on public.pecha_estimates;
 create policy "admin update leads" on public.pecha_estimates
   for update to authenticated using (public.is_admin()) with check (public.is_admin());
 
 drop policy if exists "auth insert" on public.pecha_estimates;
+drop policy if exists "admin insert leads" on public.pecha_estimates;
 create policy "admin insert leads" on public.pecha_estimates
   for insert to authenticated with check (public.is_admin());
 
